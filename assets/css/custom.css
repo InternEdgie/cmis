@@ -1,0 +1,28 @@
+.form-control::-webkit-input-placeholder {
+  color: black !important;
+  opacity: 1;
+}
+
+.form-control::-moz-placeholder {
+  color: black !important;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+  color: black !important;
+  opacity: 1;
+}
+
+.form-control::-ms-input-placeholder {
+  color: black !important;
+  opacity: 1;
+}
+
+.form-control::placeholder {
+  color: black !important;
+  opacity: 1;
+}
+
+body {
+  background-color: black !important;
+}
