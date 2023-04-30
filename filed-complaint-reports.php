@@ -78,12 +78,6 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 	table {
 		font-size: 11px;
 	}
-
-	@media print {
-		table {
-			background-color: blue !important;
-		}
-	}
 </style>
 <div id="content">
 	<div class="container-fluid">
@@ -137,49 +131,56 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 						<table class="table table-striped border-0" id="table_desc" width="100%">
 							<thead class="bg-gray-900 text-white border-0">
 								<tr>
-									<th>Entry No.</th>
-									<th>Complainant</th>
-									<th>Respondent</th>
-									<th>Nature of Case</th>
-									<th>Status</th>
+									<th style="width: 10%">Entry No.</th>
+									<th style="width: 10%">Date</th>
+									<th style="width: 10%">Time</th>
+									<th style="width: 20%">Complainant</th>
+									<th style="width: 20%">Respondent</th>
+									<th style="width: 20%">Nature of Case</th>
+									<th style="width: 10%">Status</th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php while ($row = $fc->fetch_assoc()) : ?>
 									<tr>
-										<th class="align-middle"><?= $row['fc_id']; ?></th>
+										<th><?= $row['fc_id']; ?></th>
+										<td><?= date('M. d, Y', strtotime($row['fc_regdatetime'])) ?></td>
+										<td><?= date('h:i A', strtotime($row['fc_regdatetime'])) ?></td>
 										<td>
 											<?php
 											$comp_id = $row['comp_id'];
 											if ($row['fc_type'] == 0) {
-												$c_res = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '$comp_id'")->fetch_assoc();
-												$comp_fullname = $c_res['res_fname'] . ' ' . $c_res['res_mname'] . ' ' . $c_res['res_lname'];
+												$c_res = $connection->query("SELECT * FROM tbl_residents tr, tbl_zone tz WHERE tr.res_id = '$comp_id' AND tz.zone_id = tr.zone_id")->fetch_assoc();
+												$comp_fullname = '<strong>' . $c_res['res_fname'] . ' ' . $c_res['res_mname'] . ' ' . $c_res['res_lname'] . '</strong>';
+												$comp_address = $c_res['zone_name'] . ', Macabalan<br>Cagayan de Oro City<br>Misamis Oriental 9000';
 											} else if ($row['fc_type'] == 1) {
 												$c_nres = $connection->query("SELECT * FROM tbl_non_residents WHERE nres_id = '$comp_id'")->fetch_assoc();
-												$comp_fullname = $c_nres['nres_fname'] . ' ' . $c_nres['nres_mname'] . ' ' . $c_nres['nres_lname'];
+												$comp_fullname = '<strong>' . $c_nres['nres_fname'] . ' ' . $c_nres['nres_mname'] . ' ' . $c_nres['nres_lname'] . '</strong>';
+												$comp_address =  $c_nres['nres_zone'] . ', ' .  $c_nres['nres_barangay'] . '<br>' . $c_nres['nres_city'] . '<br>' . $c_nres['nres_province'] . ', ' .  $c_nres['nres_zcode'];
 											}
-											echo $comp_fullname;
+											echo $comp_fullname . '<br>' . $comp_address;
 											?>
 										</td>
 										<td>
 											<?php
 											$resp_id = $row['resp_id'];
-											$residents = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '$resp_id'")->fetch_assoc();
-											$resp_fullname = $residents['res_fname'] . ' ' . $residents['res_mname'] . ' ' . $residents['res_lname'];
-											echo $resp_fullname;
+											$residents = $connection->query("SELECT * FROM tbl_residents tr, tbl_zone tz WHERE tr.res_id = '$resp_id' AND tz.zone_id = tr.zone_id")->fetch_assoc();
+											$resp_fullname = '<strong>' . $residents['res_fname'] . ' ' . $residents['res_mname'] . ' ' . $residents['res_lname'] . '</strong>';
+											$resp_address = $residents['zone_name'] . ', Macabalan<br>Cagayan de Oro City<br>Misamis Oriental 9000';
+											echo $resp_fullname . '<br>' . $resp_address;
 											?>
 										</td>
-										<td>
+										<td class="text-truncate">
 											<?php
 											$com = $row['com_id'];
 											$c_query = "SELECT * FROM tbl_complaint_type WHERE com_id = '$com'";
 											$c = $connection->query($c_query)->fetch_assoc();
-											$com_type = $c['com_name'];
-											if (strlen($com_type) >= 15) {
-												echo substr($com_type, 0, 15,) . '...';
-											} else {
-												echo $com_type;
-											}
+											echo $com_type = $c['com_name'];
+											// if (strlen($com_type) >= 15) {
+											// 	echo substr($com_type, 0, 15,) . '...';
+											// } else {
+											// 	echo $com_type;
+											// }
 
 											?>
 										</td>
@@ -190,20 +191,11 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 											$check_sched = $connection->query($schedule);
 
 											if ($check_sched->num_rows > 0) {
-												$fc_status_id = $row['status_id'];
-												$status = "SELECT * FROM tbl_status";
-												$status_r = $connection->query($status);
-												if ($fc_status_id != 0) {
-													while ($statdata = $status_r->fetch_assoc()) {
-														if ($fc_status_id == $statdata['status_id']) {
-															echo $statdata['status_name'];
-														}
-													}
-												} else {
-													echo "---";
-												}
+												$status_id = $row['status_id'];
+												$status = $connection->query("SELECT * FROM tbl_status WHERE status_id = '$status_id'")->fetch_assoc();
+												echo $status['status_name'];
 											} else {
-												echo "<span class='text-muted'>Set Schedule</span>";
+												echo "<span class='text-muted'>No Schedule</span>";
 											}
 											?>
 										</td>
@@ -216,12 +208,13 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 									<th>Complainant</th>
 									<th>Respondent</th>
 									<th>Nature of Case</th>
+									<th>Date</th>
+									<th>Time</th>
 									<th>Status</th>
 								</tr>
 							</tfoot>
 						</table>
 					</div>
-
 				</div>
 			</div>
 		</div>
