@@ -10,7 +10,7 @@ $fc = $connection->query("SELECT * FROM tbl_file_complaint");
 	<div class="container-fluid">
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">FILE COMPLAINTS </h1>
-			<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-danger btn-icon-split shadow-sm" data-toggle="modal" data-target="#chooseComplainant">
+			<a href="#" class="btn btn-sm btn-danger btn-icon-split shadow-sm" data-toggle="modal" data-target="#chooseComplainant">
 				<span class="icon text-white-50">
 					<i class="fas fa-file-alt"></i>
 				</span>
@@ -116,7 +116,7 @@ $fc = $connection->query("SELECT * FROM tbl_file_complaint");
                                         <?php
                                     }
             						?>
-            						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-eye fa-sm"></i></a>
+            						<a href="view-file-complaint.php?id=<?= $row['fc_id'] ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-eye fa-sm"></i></a>
             					</td>
             				</tr>
             				<?php endwhile; ?>

@@ -1,4 +1,5 @@
 <?php
+include 'config/user-middleware.php';
 include 'layouts/header.php';
 include 'config/connection.php';
 
@@ -31,9 +32,9 @@ $remarks = $connection->query("SELECT * FROM tbl_remarks");
               	<h6 class="m-0 font-weight-bold text-dark">CALENDAR</h6>
             </div>
             <div class="card-body">
-            	<?php include 'assets/modals/add-schedule-modal.php' ?>
-            	<?php include 'assets/modals/view-schedule-modal.php' ?>
-            	<?php include 'assets/modals/update-schedule-modal.php' ?>
+            	<?php //include 'assets/modals/add-schedule-modal.php' ?>
+            	<?php //include 'assets/modals/view-schedule-modal.php' ?>
+            	<?php //include 'assets/modals/update-schedule-modal.php' ?>
             	<div class="row">
             		<div class="col-lg-12 col-md-12 col-sm-12" id="page-calendar">
             			<div id="calendar"></div>

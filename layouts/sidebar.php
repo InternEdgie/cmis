@@ -25,7 +25,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/")+1)
 	<div class="sidebar-heading">
 		Main Menu
 	</div>
-	<li class="nav-item <?= $page == 'file-complaint.php'? 'active' : '' ?>">
+	<li class="nav-item <?= $page == 'file-complaint.php' || $page == 'view-file-complaint.php'? 'active' : '' ?>">
 		<a class="nav-link" href="file-complaint.php">
 			<i class="fas fa-fw fa-file-alt"></i>
 			<span>File Complaint</span>
@@ -54,12 +54,12 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/")+1)
 				</div>
 			</div>
 		</li>
-		<li class="nav-item">
-			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+		<li class="nav-item <?= $page == 'filed-complaint-reports.php' ? 'active':'' ?>">
+			<a class="nav-link <?= $page == 'filed-complaint-reports.php' ? '':'collapsed' ?>" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
 				<i class="fas fa-fw fa-file"></i>
 				<span>Reports</span>
 			</a>
-			<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+			<div id="collapseUtilities" class="collapse <?= $page == 'filed-complaint-reports.php' ? 'show':'' ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">List of Reports:</h6>
 					<a class="collapse-item <?= $page == 'filed-complaint-reports.php'? 'active' : '' ?>" href="filed-complaint-reports.php">Filed Complaints</a>

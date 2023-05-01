@@ -34,6 +34,9 @@
 
 	<link rel="stylesheet" href="assets/vendor/daterangepicker/daterangepicker.css" />
 
+	<link rel="stylesheet" href="assets/vendor/sweetalert2/sweetalert2.min.css">
+	<link rel="stylesheet" href="assets/vendor/toastr/toastr.min.css">
+
 
 	<style type="text/css">
 		body {
