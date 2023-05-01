@@ -37,7 +37,9 @@
 	    <script src="assets/vendor/moment/moment.min.js"></script>
 	    <script src="assets/vendor/daterangepicker/daterangepicker.js"></script>
 		<script src="assets/vendor/sweetalert2/sweetalert2.min.js"></script>
+		<script src="assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
 		<script src="assets/vendor/toastr/toastr.min.js"></script>
+		
 		<!-- Page level custom scripts -->
 		<script src="assets/js/custom.js"></script>
 		<!-- <script src="./assets/js/script.js"></script> -->

@@ -45,25 +45,25 @@ $complainant = $connection->query("SELECT * FROM tbl_file_complaint WHERE comp_i
 						<div class="row mb-3">
 							<div class="col-sm-4">
 								<dt>NAME</dt>
-								<dd id="fullname" ><?= $row['nres_fname'] . ' ' . $row['nres_mname'] . ' ' . $row['nres_lname'] . ' ' . $row['nres_suffix']; ?></dd>
+								<dd id="fullname"><?= $row['nres_fname'] . ' ' . $row['nres_mname'] . ' ' . $row['nres_lname'] . ' ' . $row['nres_suffix']; ?></dd>
 							</div>
 							<div class="col-sm-4">
 								<dt>GENDER</dt>
-								<dd id="gender" ><?= $row['nres_gender'] ?></dd>
+								<dd id="gender"><?= $row['nres_gender'] ?></dd>
 							</div>
 							<div class="col-sm-4">
 								<dt>CIVIL STATUS</dt>
-								<dd id="civil" ><?= $row['nres_cstatus'] ?></dd>
+								<dd id="civil"><?= $row['nres_cstatus'] ?></dd>
 							</div>
 						</div>
 						<div class="row mb-3">
 							<div class="col-sm-4">
 								<dt>BIRTHDAY</dt>
-								<dd id="birthday" ><?= date('M. d, Y', strtotime($row['nres_birthday'] )) ?></dd>
+								<dd id="birthday"><?= date('M. d, Y', strtotime($row['nres_birthday'])) ?></dd>
 							</div>
 							<div class="col-sm-4">
 								<dt>AGE</dt>
-								<dd id="age" ><?= $row['nres_age'] ?></dd>
+								<dd id="age"><?= $row['nres_age'] ?></dd>
 							</div>
 							<div class="col-sm-4">
 								<dt>CITIZENSHIP</dt>
@@ -73,14 +73,14 @@ $complainant = $connection->query("SELECT * FROM tbl_file_complaint WHERE comp_i
 						<div class="row">
 							<div class="col-sm-4">
 								<dt>CONTACT NUMBER</dt>
-								<dd id="contact" ><?= $row['nres_contact'] ?></dd>
+								<dd id="contact"><?= $row['nres_contact'] ?></dd>
 							</div>
 							<div class="col-sm-8">
 								<dt>ADDRESS</dt>
 								<dd id="address">
-									<?php 
+									<?php
 
-									echo $row['nres_zone'] . ', ' . $row['nres_barangay'] . ', ' . $row['nres_city']  . ', ' . $row['nres_province'] . ' ' . $row['nres_zcode']; 
+									echo $row['nres_zone'] . ', ' . $row['nres_barangay'] . ', ' . $row['nres_city']  . ', ' . $row['nres_province'] . ' ' . $row['nres_zcode'];
 									?>
 								</dd>
 							</div>
@@ -93,7 +93,7 @@ $complainant = $connection->query("SELECT * FROM tbl_file_complaint WHERE comp_i
 					<h6 class="m-0 font-weight-bold card-title">COMPLAINT FILED HISTORY</h6>
 				</div>
 				<div class="card-body">
-					<?php if ($complainant->num_rows > 0): ?>
+					<?php if ($complainant->num_rows > 0) : ?>
 						<div class="table-responsive">
 							<table class="table table-striped text-gray-900 border" width="100%">
 								<tr>
@@ -106,9 +106,9 @@ $complainant = $connection->query("SELECT * FROM tbl_file_complaint WHERE comp_i
 								<?php
 								while ($rowc = $complainant->fetch_assoc()) {
 									$resp_id = $rowc['resp_id'];
-		                            $resp1 = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '$resp_id'")->fetch_assoc();
-		                            $rp_fullname = $resp1['res_fname'] . ' ' . $resp1['res_mname'] . ' ' . $resp1['res_lname'];
-									?>
+									$resp1 = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '$resp_id'")->fetch_assoc();
+									$rp_fullname = $resp1['res_fname'] . ' ' . $resp1['res_mname'] . ' ' . $resp1['res_lname'];
+								?>
 									<tr>
 										<td><?= $rowc['fc_id'] ?></td>
 										<td><?= $rp_fullname ?></td>
@@ -132,12 +132,12 @@ $complainant = $connection->query("SELECT * FROM tbl_file_complaint WHERE comp_i
 										</td>
 										<td><?= date('F d, Y', strtotime($rowc['fc_regdatetime'])) ?></td>
 									</tr>
-									<?php
+								<?php
 								}
 								?>
 							</table>
 						</div>
-					<?php else: ?>
+					<?php else : ?>
 						<h6 class="text-center font-italic text-gray-500">No data available</h6>
 					<?php endif; ?>
 				</div>
@@ -150,65 +150,116 @@ $complainant = $connection->query("SELECT * FROM tbl_file_complaint WHERE comp_i
 		<table class="w-100 mb-5">
 			<tr>
 				<td rowspan="6" style="width:10%"><img src="assets/img/logo.png" width="100" class="img-fluid" /></td>
-				<td style="width:80%"><h6 class="mb-0 h6 text-center">Republic of the Philippines</h6></td>
+				<td style="width:80%">
+					<h6 class="mb-0 h6 text-center">Republic of the Philippines</h6>
+				</td>
 				<td rowspan="6" style="width:10%"></td>
 			</tr>
 			<tr>
-				<td><h6 class="mb-0 text-center">Province of Misamis Oriental</h6></td>
+				<td>
+					<h6 class="mb-0 text-center">Province of Misamis Oriental</h6>
+				</td>
 
 			</tr>
 			<tr>
-				<td><h6 class="mb-0 text-center">City of Cagayan de Oro</h6></td>
+				<td>
+					<h6 class="mb-0 text-center">City of Cagayan de Oro</h6>
+				</td>
 
 			</tr>
 			<tr>
-				<td><h6 class="mb-0 h6 font-weight-bold text-center">OFFICE OF LUPONG TAGAPAMAYAPA</h6></td>
+				<td>
+					<h6 class="mb-0 h6 font-weight-bold text-center">OFFICE OF LUPONG TAGAPAMAYAPA</h6>
+				</td>
 
 			</tr>
 			<tr>
-				<td><h5 class="fw-bold mb-0 font-weight-bold text-center">BARANGAY MACABALAN</h5></td>
+				<td>
+					<h5 class="fw-bold mb-0 font-weight-bold text-center">BARANGAY MACABALAN</h5>
+				</td>
 
 			</tr>
 			<tr>
-				<td class="text-center font-italic"><h7>Tel No. 881-2209</h7></td>
+				<td class="text-center font-italic">
+					<h7>Tel No. 881-2209</h7>
+				</td>
 			</tr>
 		</table>
 	</div>
 </noscript>
 <script>
-	$(document).ready(function () {
-		$('#print').click(function(){
+	$(document).ready(function() {
+		$('#print').click(function() {
 			// start_loader();
 			var _h = $('head').clone()
 			var _p = $('#printThis').clone()
-            var _ph = $($('noscript#print-header').html()).clone()
-            var _el = $('<div>')
-            _p.find('.card').removeClass('shadow card')
-            _p.find('.card-header').removeClass('card-header')
-            _p.find('.card-body').removeClass('card-body')
-            _p.find('h6.card-title').addClass('text-center h5')
-            _el.append(_h)
-            _el.append(_ph)
-            _el.find('title').text('Non-Resident Profile')
-            _el.append(_p)
+			var _ph = $($('noscript#print-header').html()).clone()
+			var _el = $('<div>')
+			_p.find('.card').removeClass('shadow card')
+			_p.find('.card-header').removeClass('card-header')
+			_p.find('.card-body').removeClass('card-body')
+			_p.find('h6.card-title').addClass('text-center h5')
+			_el.append(_h)
+			_el.append(_ph)
+			_el.find('title').text('Non-Resident Profile')
+			_el.append(_p)
 
-            var nw = window.open('','_blank','width=1000,height=900,top=50,left=200')
-                nw.document.write(_el.html())
-                nw.document.close()
+			var nw = window.open('', '_blank', 'width=1000,height=900,top=50,left=200')
+			nw.document.write(_el.html())
+			nw.document.close()
 
-                setTimeout(() => {
-                	nw.print()
-                	setTimeout(() => {
-                		nw.close()
-                		// end_loader()
-                		// $('.table').dataTable({
-                		// 	columnDefs: [
-                		// 	{ orderable: false, targets: 5 }
-                		// 	],
-                		// });
-                	}, 300);
-                }, (750));
+			setTimeout(() => {
+				nw.print()
+				setTimeout(() => {
+					nw.close()
+					// end_loader()
+					// $('.table').dataTable({
+					// 	columnDefs: [
+					// 	{ orderable: false, targets: 5 }
+					// 	],
+					// });
+				}, 300);
+			}, (750));
 		});
+		$('#updateNonResident').on('submit', function(e) {
+			e.preventDefault();
+			var updateNonResident = $('#updateNonResident').serialize();
+			console.log(updateNonResident)
+			swal.fire({
+				title: "Are you sure you want to update this record?",
+				icon: 'warning',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#f6c23e',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/edit-non-resident-query.php",
+						data: updateNonResident,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
+
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
 	});
 	// toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
 </script>

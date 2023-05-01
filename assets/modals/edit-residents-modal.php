@@ -2,7 +2,8 @@
 <div class="modal fade" id="editResidentModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/edit-resident-query.php" auto_complete="off">
+			<!-- <form method="post" enctype="multipart/form-data" action="config/queries/edit-resident-query.php" auto_complete="off"> -->
+			<form id="updateResident" method="POST" auto_complete="off">
 				<input type="hidden" name="res_id" value="<?= $row['res_id'] ?>">
 				<div class="modal-header">
 					<h4 class="modal-title font-weight-bold"><i class="bi bi-pencil-square mr-2 text-warning"></i>EDIT | <span class="text-uppercase"><?= $row['res_lname'] . ', ' . $row['res_fname'] ?></span></h4>

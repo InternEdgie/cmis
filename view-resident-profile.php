@@ -263,6 +263,45 @@ $complainant = $connection->query("SELECT * FROM tbl_file_complaint WHERE comp_i
                 	}, 300);
                 }, (750));
 		});
+		$('#updateResident').on('submit', function(e) {
+            e.preventDefault();
+            var updateResident = $('#updateResident').serialize();
+            console.log(updateResident)
+            swal.fire({
+                title: "Are you sure you want to update this record?",
+                icon: 'warning',
+                showCancelButton: !0,
+                confirmButtonText: "Yes, continue!",
+                confirmButtonColor: '#f6c23e',
+                cancelButtonText: "No, wait go back!",
+                reverseButtons: !0
+            }).then(function(e) {
+                if (e.value === true) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "config/queries/edit-resident-query.php",
+                        data: updateResident,
+                        success: function(data) {
+                            var response = JSON.parse(data);
+                            console.log(response);
+                            if (response.success_flag == 0) {
+                                toastr.error(response.message)
+                            } else {
+                                toastr.success(response.message);
+
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 2000);
+                            }
+                        }
+                    });
+                } else {
+                    e.dismiss;
+                }
+            }, function(dismiss) {
+                return false;
+            })
+        })
 	});
 	// toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
 </script>

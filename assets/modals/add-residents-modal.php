@@ -1,7 +1,7 @@
 <div class="modal fade" id="addResidentModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/add-resident-query.php" auto_complete="off">
+			<form id="insertResident" method="POST" auto_complete="off">
 				<div class="modal-header">
 					<h4 class="modal-title font-weight-bold"><i class="bi bi-person-plus-fill mr-2 text-success"></i>ADD RESIDENT</h4>
 					<button type="button" class="close align-self-center" data-dismiss="modal">&times;</button>

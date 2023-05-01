@@ -1,7 +1,7 @@
 <div class="modal fade" id="addLuponModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<form method="POST" enctype="multipart/form-data" action="config/queries/add-lupon-query.php">
+			<form id="insertLupon" method="POST">
 				<div class="modal-header">
 					<h4 class="modal-title font-weight-bold"><i class="bi bi-person-plus-fill mr-2 text-success"></i>ADD LUPON MEMBER/OFFICIAL</h4>
 					<button type="button" class="close align-self-center" data-dismiss="modal">&times;</button>

@@ -1,7 +1,7 @@
 <div class="modal fade" id="editLuponModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<form method="POST" enctype="multipart/form-data" action="config/queries/edit-lupon-query.php">
+			<form id="updateLupon" method="POST">
 				<input type="hidden" name="res_id" value="<?= $id ?>">
 				<input type="hidden" name="lupon_id" value="<?= $row['lupon_id'] ?>">
 				<div class="modal-header">

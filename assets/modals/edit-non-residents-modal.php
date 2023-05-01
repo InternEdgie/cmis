@@ -2,7 +2,7 @@
 <div class="modal fade" id="editNonResidentModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/edit-non-resident-query.php" auto_complete="off">
+			<form id="updateNonResident" method="POST"> 
 				<input type="hidden" name="nres_id" value="<?= $id ?>">
 				<div class="modal-header">
 					<h4 class="modal-title font-weight-bold"><i class="bi bi-pencil-square mr-2 text-warning"></i>EDIT | <span class="text-uppercase"><?= $row['nres_lname'] . ', ' . $row['nres_fname'] ?></span></h4>

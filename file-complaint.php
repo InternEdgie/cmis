@@ -102,21 +102,21 @@ $fc = $connection->query("SELECT * FROM tbl_file_complaint");
             						<?php
             						if ($check_sched->num_rows > 0) {
             							?>
-            							<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-calendar-check fa-sm"></i></a>
+            							<a href="#" class="btn btn-sm btn-success shadow-sm"><i class="bi bi-calendar-check"></i></a>
             							<?php
             						} else {
             							?>
-            							<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm"><i class="fas fa-calendar-times fa-sm text-white-50"></i></a>
+            							<a href="#" class="btn btn-sm btn-secondary shadow-sm"><i class="bi bi-calendar-x text-white-50"></i></a>
             							<?php
             						}
 
                                     if ($_SESSION['role'] == 1) {
                                         ?>
-                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"><i class="fas fa-print fa-sm"></i></a>
+                                        <a href="#" class="btn btn-sm btn-primary shadow-sm"><i class="bi bi-printer"></i></a>
                                         <?php
                                     }
             						?>
-            						<a href="view-file-complaint.php?id=<?= $row['fc_id'] ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-eye fa-sm"></i></a>
+            						<a href="view-file-complaint.php?id=<?= $row['fc_id'] ?>" class="btn btn-sm btn-info shadow-sm"><i class="bi bi-info-circle fa-sm"></i></a>
             					</td>
             				</tr>
             				<?php endwhile; ?>

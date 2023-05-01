@@ -1,7 +1,7 @@
 <div class="modal fade" id="addNonResidentModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/add-non-resident-query.php" auto_complete="off">
+			<form id="insertNonResident" method="POST">
 				<div class="modal-header">
 					<h4 class="modal-title font-weight-bold"><i class="bi bi-person-plus-fill mr-2 text-success"></i>ADD NON-RESIDENT</h4>
 					<button type="button" class="close align-self-center" data-dismiss="modal">&times;</button>
@@ -71,7 +71,7 @@
 								<select class="form-control select2 form-select" id="citizenship_id" name="citizenship_id" required>
 									<option value="" disabled selected>Citizenship</option>
 									<?php while ($cdata = $citizenship->fetch_assoc()): ?>
-										<option value="$cdata['citizenship_id']"><?= $cdata['citizenship_name'] ?></option>
+										<option value="<?= $cdata['citizenship_id'] ?>"><?= $cdata['citizenship_name'] ?></option>
 									<?php endwhile; ?>
 								</select>
 							</div>

@@ -93,6 +93,7 @@ if ($schedules->num_rows == 3) {
                         <dd class="statement"><?= $row['fc_statement'] ?></dd>
                         <dd class="edit-statement d-none">
                             <form id="updateStatement" method="POST">
+                                <input type="hidden" value="<?= $id ?>" name="fc_id" id="fc_id">
                                 <textarea class="form-control" name="fc_statement" id="fc_statement" rows="3"><?= $row['fc_statement'] ?></textarea>
                                 <div class="text-right mt-3">
                                     <input type="submit" class="btn btn-sm btn-warning" style="color:black" value="Submit">
@@ -242,37 +243,39 @@ if ($schedules->num_rows == 3) {
         })
         $('#updateStatement').on('submit', function(e) {
             e.preventDefault();
-            var fc_statement = $('#fc_statement').val();
+            var updateFC = $('#updateStatement').serialize();
+            console.log(updateFC)
             swal.fire({
-                title: "Are you sure you want to update your password?",
+                title: "Continue updating the Statement?",
                 icon: 'warning',
                 showCancelButton: !0,
                 confirmButtonText: "Yes, continue!",
-                confirmButtonColor: '#dc3545',
+                confirmButtonColor: '#f6c23e',
                 cancelButtonText: "No, wait go back!",
                 reverseButtons: !0
             }).then(function(e) {
-                // if (e.value === true) {
-                //     $.ajax({
-                //         type: 'POST',
-                //         url: "{{ url('updatePassword') }}",
-                //         data: updatePassword,
-                //         dataType: "json",
-                //         success: function(response) {
-                //             if (response.success_flag == 0) {
-                //                 toastr.error(response.message)
-                //             } else {
-                //                 toastr.success(response.message);
+                if (e.value === true) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "config/queries/edit-file-complaint-query.php",
+                        data: updateFC,
+                        success: function(data) {
+                            var response = JSON.parse(data);
+                            console.log(response);
+                            if (response.success_flag == 0) {
+                                toastr.error(response.message)
+                            } else {
+                                toastr.success(response.message);
 
-                //                 setTimeout(function() {
-                //                     window.location.reload();
-                //                 }, 2000);
-                //             }
-                //         }
-                //     });
-                // } else {
-                //     e.dismiss;
-                // }
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 2000);
+                            }
+                        }
+                    });
+                } else {
+                    e.dismiss;
+                }
             }, function(dismiss) {
                 return false;
             })
@@ -310,5 +313,9 @@ if ($schedules->num_rows == 3) {
             }, (750));
         });
     });
+   
     // toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
 </script>
+<?php
+include 'layouts/footer.php';
+?>
