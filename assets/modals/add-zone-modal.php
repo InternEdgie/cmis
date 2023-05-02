@@ -9,11 +9,11 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="position">Zone Name:</label>
-						<input type="text" class="form-control" placeholder="Enter zone..." id="zone" name="zone">
+						<input type="text" class="form-control" placeholder="Enter zone..." id="zone" name="zone" required>
 					</div>
 					<div class="form-group">
 						<label for="pos_description">Description:</label>
-						<textarea class="form-control" placeholder="Enter description..." id="description" name="description"></textarea>
+						<textarea class="form-control" placeholder="Enter description..." id="description" name="description" required></textarea>
 					</div>
 				</div>
 				<div class="modal-footer">

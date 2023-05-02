@@ -42,7 +42,7 @@ $citizenship = $connection->query("SELECT * FROM tbl_citizenship");
 										<td><?= $row['citizenship_name'] ?></td>
 										<td><?php if(strlen($row['citizenship_description']) >= 55): echo substr($row['citizenship_description'], 0, 55) . '...'; else: echo $row['citizenship_description']; endif; ?></td>
 										<td><?= date('M. j, Y', strtotime($row['citizenship_regdatetime'])) ?></td>
-										<td><?= date('h:m A', strtotime($row['citizenship_regdatetime'])) ?></td>
+										<td data-id="<?= $row['citizenship_id'] ?>"><?= date('h:m A', strtotime($row['citizenship_regdatetime'])) ?></td>
 										<td><a href="" class="btn btn-warning btn-sm shadow-sm" data-toggle="modal" data-target="#editCitizenshipModal<?= $row['citizenship_id'] ?>" data-toggle="tooltip" title="Edit"><i class="bi bi-pencil-square text-gray-900"></i></a></td>
 									</tr>
 									<?php
@@ -67,7 +67,90 @@ $citizenship = $connection->query("SELECT * FROM tbl_citizenship");
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+		$('#insertCitizenship').on('submit', function(e) {
+			e.preventDefault();
+			var insertCitizenship = $('#insertCitizenship').serialize();
+			console.log(insertCitizenship)
+			swal.fire({
+				title: "Continue adding new record of citizenship?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#4e73df',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-citizenship-query.php",
+						data: insertCitizenship,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
 
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
+
+		// $('#updateCitizenship').on('submit', function(e) {
+		// 	e.preventDefault();
+		// 	console.log($(this).prev('div').attr('data-id'))
+		// 	// var updateCitizenship = $('#updateCitizenship').serialize();
+		// 	// console.log(updateCitizenship)
+		// 	// swal.fire({
+		// 	// 	title: "Are you sure you want to update this record?",
+		// 	// 	icon: 'question',
+		// 	// 	showCancelButton: !0,
+		// 	// 	confirmButtonText: "Yes, continue!",
+		// 	// 	confirmButtonColor: '#f6c23e',
+		// 	// 	cancelButtonText: "No, wait go back!",
+		// 	// 	reverseButtons: !0
+		// 	// }).then(function(e) {
+		// 	// 	if (e.value === true) {
+		// 	// 		$.ajax({
+		// 	// 			type: 'POST',
+		// 	// 			url: "config/queries/edit-citizenship-query.php",
+		// 	// 			data: updateCitizenship,
+		// 	// 			success: function(data) {
+		// 	// 				var response = JSON.parse(data);
+		// 	// 				console.log(response);
+		// 	// 				if (response.success_flag == 0) {
+		// 	// 					toastr.error(response.message)
+		// 	// 				} else {
+		// 	// 					toastr.success(response.message);
+
+		// 	// 					setTimeout(function() {
+		// 	// 						window.location.reload();
+		// 	// 					}, 2000);
+		// 	// 				}
+		// 	// 			}
+		// 	// 		});
+		// 	// 	} else {
+		// 	// 		e.dismiss;
+		// 	// 	}
+		// 	// }, function(dismiss) {
+		// 	// 	return false;
+		// 	// })
+		// })
+	})
+</script>
 <?php
 include 'assets/modals/add-citizenship-modal.php';
 include 'layouts/footer.php';

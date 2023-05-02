@@ -87,13 +87,13 @@
 						<div class="col-sm-5">
 							<div class="form-group">
 								<label for="barangay">Barangay: <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" placeholder="Barangay" id="barangay" name="barangay">
+								<input type="text" class="form-control" placeholder="Barangay" id="barangay" name="barangay" required>
 							</div>
 						</div>
 						<div class="col-sm-5">
 							<div class="form-group">
 								<label for="city">Municipality: <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" placeholder="Municipality" id="city" name="city">
+								<input type="text" class="form-control" placeholder="Municipality" id="city" name="city" required>
 							</div>
 						</div>
 					</div>
@@ -107,7 +107,7 @@
 						<div class="col-sm-2">
 							<div class="form-group">
 								<label for="zcode">Zip Code:</label>
-								<input type="text" class="form-control" placeholder="Zip Code" id="zcode" name="zcode">
+								<input type="text" class="form-control" placeholder="Zip Code" id="zcode" name="zcode" required>
 							</div>
 						</div>
 					</div>
