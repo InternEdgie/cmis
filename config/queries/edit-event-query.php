@@ -7,7 +7,7 @@ $color = $_POST['color'];
 $user_id = $_SESSION['auth_user']['user_id'];
 
 $check = $connection->query("SELECT * FROM tbl_events WHERE event_name = '$name' AND event_id != '$id'");
-$check_changes = $connection->query("SELECT * FROM tbl_events WHERE event_name = '$name' AND event_id == '$id'")->fetch_assoc();
+$check_changes = $connection->query("SELECT * FROM tbl_events WHERE event_id = '$id'")->fetch_assoc();
 if ($name != $check_changes['event_name'] || $color != $check_changes['event_color']) {
 	if ($check->num_rows > 0) {
 		$message = "<b>" . $name . "</b> is already exist.";

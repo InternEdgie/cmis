@@ -7,7 +7,7 @@ $description = $_POST['description'];
 $user_id = $_SESSION['auth_user']['user_id'];
 
 $check = $connection->query("SELECT * FROM tbl_citizenship WHERE citizenship_name = '$name' AND citizenship_id != '$id'");
-$check_changes = $check->fetch_assoc();
+$check_changes = $connection->query("SELECT * FROM tbl_citizenship WHERE citizenship_id = '$id'")->fetch_assoc();
 if ($name != $check_changes['citizenship_name'] || $description != $check_changes['citizenship_description']) {
 	if ($check->num_rows > 0) {
 		$message = "<b>" . $name . "</b> is already exist.";
