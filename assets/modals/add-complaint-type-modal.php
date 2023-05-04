@@ -1,7 +1,7 @@
 <div class="modal fade" id="addComplaintTypeModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/add-complaint-type-query.php" auto_complete="off">
+			<form method="post" id="insertComType">
 				<div class="modal-header">
 					<h5 class="modal-title"><i class="fas fa-database mr-2"></i>Add Complaint Type</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>

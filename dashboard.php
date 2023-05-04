@@ -145,10 +145,10 @@ foreach($events as $srow) {
          	</div>
         </div>
 
-        <div class="row">
+        <div class="row border">
             <!-- Bar Chart -->
-            <div class="col-xl-8 col-lg-7">
-                <div class="card shadow mb-4">
+            <div class="col-md-6">
+                <div class="card shadow mb-4 h-100">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">FILED CASES</h6>
@@ -161,10 +161,10 @@ foreach($events as $srow) {
                 </div>
             </div>
             <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-3">
-                <div class="card shadow mb-4">
+            <div class="col-md-6">
+                <div class="card shadow mb-4 h-100">
                     <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between h-auto">
                         <h6 class="m-0 font-weight-bold text-primary">EVENTS</h6>
                     </div>
                     <!-- Card Body -->

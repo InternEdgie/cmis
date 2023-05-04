@@ -1,7 +1,6 @@
 <div class="modal fade" id="editCitizenshipModal<?= $row['citizenship_id'] ?>" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<div data-id=<?= $row['citizenship_id'] ?>></div>
 			<form method="post" id="updateCitizenship<?= $row['citizenship_id'] ?>">
 				<input type="hidden" name="citizenship_id" value="<?= $row['citizenship_id'] ?>">
 				<div class="modal-header">

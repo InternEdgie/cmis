@@ -8,7 +8,7 @@ $user_id = $_SESSION['auth_user']['user_id'];
 
 $check = $connection->query("SELECT * FROM tbl_citizenship WHERE citizenship_name = '$name'");
 if ($check->num_rows > 0) {
-	$message = "<b>" . $name . "</b> is already taken.";
+	$message = "<b>" . $name . "</b> is already exist.";
 	$flag = 0;
 } else {
 	$query = "INSERT INTO tbl_citizenship (citizenship_name, citizenship_description) VALUES ('$name', '$description')";
