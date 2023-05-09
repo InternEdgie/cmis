@@ -1,7 +1,7 @@
 <div class="modal fade" id="addZoneModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/add-zone-query.php" auto_complete="off">
+			<form method="POST" id="insertZone">
 				<div class="modal-header">
 					<h5 class="modal-title"><i class="fas fa-database mr-2"></i>Add Zone (Purok)</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>

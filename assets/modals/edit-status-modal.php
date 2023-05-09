@@ -1,7 +1,7 @@
 <div class="modal fade" id="editStatusModal<?= $row['status_id'] ?>" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/edit-status-query.php" auto_complete="off">
+			<form method="POST" id="updateStatus<?= $row['status_id'] ?>">
 				<input type="hidden" name="status_id" value="<?= $row['status_id'] ?>">
 				<div class="modal-header">
 					<h5 class="modal-title"><i class="bi bi-pencil-square mr-2 text-warning"></i>Edit Status</h5>
@@ -25,3 +25,47 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+
+		$('#updateStatus<?= $row['status_id'] ?>').on('submit', function(e) {
+			e.preventDefault();
+			var updateStatus = $('#updateStatus<?= $row['status_id'] ?>').serialize();
+			console.log(updateStatus)
+			swal.fire({
+				title: "Are you sure you want to update this record?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#f6c23e',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/edit-status-query.php",
+						data: updateStatus,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
+
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
+	})
+</script>

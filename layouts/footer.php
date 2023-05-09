@@ -39,6 +39,7 @@
 		<script src="assets/vendor/sweetalert2/sweetalert2.min.js"></script>
 		<script src="assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
 		<script src="assets/vendor/toastr/toastr.min.js"></script>
+		<script src="assets/vendor/bs-stepper/js/bs-stepper.min.js"></script>
 		
 		<!-- Page level custom scripts -->
 		<script src="assets/js/custom.js"></script>
@@ -151,6 +152,13 @@
 		    $('.my-colorpicker2').on('colorpickerChange', function(event) {
 		      	$('.my-colorpicker2 .fa-square').css('color', event.color.toString());
 		    })
+
+			document.addEventListener("DOMContentLoaded", function() {
+				setTimeout(function() {
+					document.querySelector("body").classList.add("loaded");
+				}, 10)
+			});
+
 		</script>
 	</body>
 </html>

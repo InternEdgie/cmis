@@ -67,7 +67,49 @@ $zone = $connection->query("SELECT * FROM tbl_zone");
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+		$('#insertZone').on('submit', function(e) {
+			e.preventDefault();
+			var insertZone = $('#insertZone').serialize();
+			console.log(insertZone)
+			swal.fire({
+				title: "Continue adding new record of status?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#4e73df',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-zone-query.php",
+						data: insertZone,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
 
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
+	})
+</script>
 <?php
 include 'assets/modals/add-zone-modal.php';
 include 'layouts/footer.php';

@@ -1,7 +1,7 @@
 <div class="modal fade" id="addStatusModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<form method="post" enctype="multipart/form-data" action="config/queries/add-status-query.php" auto_complete="off">
+			<form method="POST" id="insertStatus">
 				<div class="modal-header">
 					<h5 class="modal-title"><i class="fas fa-database mr-2"></i>Add Status</h5>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>

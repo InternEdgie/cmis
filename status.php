@@ -67,7 +67,49 @@ $status = $connection->query("SELECT * FROM tbl_status");
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+		$('#insertStatus').on('submit', function(e) {
+			e.preventDefault();
+			var insertStatus = $('#insertStatus').serialize();
+			console.log(insertStatus)
+			swal.fire({
+				title: "Continue adding new record of status?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#4e73df',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-status-query.php",
+						data: insertStatus,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
 
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
+	})
+</script>
 <?php
 include 'assets/modals/add-status-modal.php';
 include 'layouts/footer.php';
