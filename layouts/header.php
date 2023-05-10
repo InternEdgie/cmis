@@ -27,8 +27,9 @@
 	<link href="assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 	<!-- Select2 -->
-	<link rel="stylesheet" href="assets/vendor/select2/select2.min.css" />
-	<link rel="stylesheet" href="assets/vendor/select2/select2-bootstrap-5-theme.min.css" />
+	<link rel="stylesheet" href="assets/vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css" />
+	<link rel="stylesheet" href="assets/vendor/select2/css/select2.min.css" />
+	
 
 	<link rel="stylesheet" href="assets/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" />
 

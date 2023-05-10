@@ -25,7 +25,8 @@
 		<script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 		<!-- Select2 JS -->
-		<script src="assets/vendor/select2/select2.min.js"></script>
+		<script src="assets/vendor/select2/js/select2.min.js"></script>
+		<script src="assets/vendor/select2/js/select2.full.min.js"></script>
 
 		<!-- FullCalendar -->
 	    <script src="assets/vendor/fullcalendar/dist/index.global.min.js"></script>

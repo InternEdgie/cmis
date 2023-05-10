@@ -5,8 +5,11 @@ include 'config/connection.php';
 
 $fc = $connection->query("SELECT * FROM tbl_file_complaint");
 
-$respondents = $connection->query("SELECT * FROM tbl_residents");
+$respondents = $connection->query("SELECT * FROM tbl_residents ORDER BY res_lname ASC");
+$res_complainants = $connection->query("SELECT * FROM tbl_residents ORDER BY res_lname ASC");
+$nres_complainants = $connection->query("SELECT * FROM tbl_non_residents ORDER BY nres_lname ASC");
 $zone_list = $connection->query("SELECT * FROM tbl_zone");
+$complaint_type = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY com_name ASC");
 ?>
 <style>
 	#select2-resp_id-result-wr9p-0 {
@@ -146,26 +149,172 @@ $zone_list = $connection->query("SELECT * FROM tbl_zone");
 </div>
 <script>
 	$(document).ready(function() {
+
 		$('#first_next').on('click', function(e) {
 			e.preventDefault()
+			$('#second_step').removeClass('d-none')
+			$('#first_step').addClass('d-none')
+			$('#first_prev').removeAttr('disabled')
 		})
-
 		$('#first_prev').on('click', function(e) {
 			e.preventDefault()
+			$('#second_step').addClass('d-none')
+			$('#first_step').removeClass('d-none')
 		})
 		$('#second_next').on('click', function(e) {
 			e.preventDefault()
-		})
+			$('#third_step').removeClass('d-none')
+			$('#second_step').addClass('d-none')
+			$('#second_prev').removeAttr('disabled')
 
+		})
 		$('#second_prev').on('click', function(e) {
 			e.preventDefault()
+			$('#third_step').addClass('d-none')
+			$('#second_step').removeClass('d-none')
 		})
 
 		$('#resp_id').on('change', function() {
-			$resp_id = $(this).val()
+			var resp_id = $(this).val()
+			if (resp_id == 0) {
+				$('#add-resident-respondent').removeClass('d-none')
+				$('#res_fname').attr('required', '')
+				$('#res_lname').attr('required', '')
+				$('#res_birthday').attr('required', '')
+				$('#res_gender').attr('required', '')
+				$('#res_cstatus').attr('required', '')
+				$('#zone_id').attr('required', '')
+				$('#res_contact').attr('required', '')
 
-			if($resp_id == 0) {
-				$('#add-resident').removeAttr('d-none')
+				$('#first_next').attr('disabled', '')
+
+				$('#res_fname').removeAttr('disabled')
+				$('#res_mname').removeAttr('disabled')
+				$('#res_lname').removeAttr('disabled')
+				$('#res_suffix').removeAttr('disabled')
+				$('#res_birthday').removeAttr('disabled')
+				$('#res_gender').removeAttr('disabled')
+				$('#res_cstatus').removeAttr('disabled')
+				$('#zone_id').removeAttr('disabled')
+				$('#res_contact').removeAttr('disabled')
+			} else {
+				$('#add-resident-respondent').addClass('d-none')
+				$('#res_fname').removeAttr('required')
+				$('#res_lname').removeAttr('required')
+				$('#res_birthday').removeAttr('required')
+				$('#res_gender').removeAttr('required')
+				$('#res_cstatus').removeAttr('required')
+				$('#zone_id').removeAttr('required')
+				$('#res_contact').removeAttr('required')
+
+				$('#first_next').removeAttr('disabled')
+
+				$('#res_fname').attr('disabled', '')
+				$('#res_mname').attr('disabled', '')
+				$('#res_lname').attr('disabled', '')
+				$('#res_suffix').attr('disabled', '')
+				$('#res_birthday').attr('disabled', '')
+				$('#res_gender').attr('disabled', '')
+				$('#res_cstatus').attr('disabled', '')
+				$('#zone_id').attr('disabled', '')
+				$('#res_contact').attr('disabled', '')
+			}
+
+			if ($('#res_fname').val() != '' && $('#res_lname').val() != '' && $('#res_birthday').val() != '' && $('#res_gender').val() != '' && $('#res_cstatus').val() != '' && $('#zone_id').val() != '' && $('#res_contact').val() != '') {
+				$('#first_next').removeAttr('disabled')
+			}
+		})
+		$('.bs-stepper-content').find('#add-resident-respondent input, #add-resident-respondent select').on('change', function() {
+			var isStepValid = true;
+			$('.bs-stepper-content').find('#add-resident-respondent input[required], #add-resident-respondent select[required]').each(function() {
+				if ($(this).is('select')) { // if input is a select tag
+					if (!$(this).val()) { // if select tag has no selected value
+						isStepValid = false;
+						return false; // break out of each loop early
+					}
+				} else if ($(this).val() === '') { // if input is empty
+					isStepValid = false;
+				}
+			});
+
+			if (isStepValid) {
+				$('#first_next').removeAttr('disabled')
+			} else {
+				$('#first_next').attr('disabled', '')
+			}
+		})
+
+		$('#fc_type').on('change', function() {
+			var fc_type = $(this).val()
+
+			if (fc_type == 0) {
+				$('#select-res-complainant').removeClass('d-none')
+				$('#select-nres-complainant').addClass('d-none')
+				$('#res_comp_id').removeAttr('disabled')
+				$('#nres_comp_id').attr('disabled', '')
+			} else {
+				$('#select-res-complainant').addClass('d-none')
+				$('#select-nres-complainant').removeClass('d-none')
+				$('#res_comp_id').attr('disabled', '')
+				$('#nres_comp_id').removeAttr('disabled')
+			}
+		})
+
+		$('#res_comp_id').on('change', function() {
+			var res_comp = $(this).val()
+
+			if (res_comp == 0) {
+				$('#add-resident-complainant').removeClass('d-none')
+				$('#comp_res_fname').attr('required', '')
+				$('#comp_res_lname').attr('required', '')
+				$('#comp_res_birthday').attr('required', '')
+				$('#comp_res_gender').attr('required', '')
+				$('#comp_res_cstatus').attr('required', '')
+				$('#comp_zone_id').attr('required', '')
+				$('#comp_res_contact').attr('required', '')
+
+				$('#second_next').attr('disabled', '')
+
+				$('#comp_res_fname').removeAttr('disabled')
+				$('#comp_res_mname').removeAttr('disabled')
+				$('#comp_res_lname').removeAttr('disabled')
+				$('#comp_res_suffix').removeAttr('disabled')
+				$('#comp_res_birthday').removeAttr('disabled')
+				$('#comp_res_gender').removeAttr('disabled')
+				$('#comp_res_cstatus').removeAttr('disabled')
+				$('#comp_zone_id').removeAttr('disabled')
+				$('#comp_res_contact').removeAttr('disabled')
+			} else {
+				$('#add-resident-complainant').addClass('d-none')
+				$('#comp_res_fname').removeAttr('required')
+				$('#comp_res_lname').removeAttr('required')
+				$('#comp_res_birthday').removeAttr('required')
+				$('#comp_res_gender').removeAttr('required')
+				$('#comp_res_cstatus').removeAttr('required')
+				$('#comp_zone_id').removeAttr('required')
+				$('#comp_res_contact').removeAttr('required')
+
+				$('#second_next').removeAttr('disabled')
+
+				$('#comp_res_fname').attr('disabled', '')
+				$('#comp_res_mname').attr('disabled', '')
+				$('#comp_res_lname').attr('disabled', '')
+				$('#comp_res_suffix').attr('disabled', '')
+				$('#comp_res_birthday').attr('disabled', '')
+				$('#comp_res_gender').attr('disabled', '')
+				$('#comp_res_cstatus').attr('disabled', '')
+				$('#comp_zone_id').attr('disabled', '')
+				$('#comp_res_contact').attr('disabled', '')
+			}
+		})
+
+		$('#nres_comp_id').on('change', function() {
+			var nres_comp = $(this).val()
+
+			if (nres_comp == 0) {
+				$('#add-non-resident-complainant').removeClass('d-none')
+			} else {
+				$('#add-non-resident-complainant').addClass('d-none')
 			}
 		})
 	})

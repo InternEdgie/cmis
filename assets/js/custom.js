@@ -38,8 +38,8 @@ $(document).ready(function() {
         }
     });
   	$('.select2').select2({
-        theme: "bootstrap-5",
-        // width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+        theme: "bootstrap4",
+        width: '100%',
         placeholder: $( this ).data( 'placeholder' )
     });
 
@@ -50,6 +50,36 @@ $(document).ready(function() {
         placeholder: "SELECT 3 PANGKAT",
         allowClear: true,
     });
+
+    $('.resp_id').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Select Respondent',
+    })
+
+    $('.fc_type').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Type of Complainant',
+    })
+
+    $('.res_comp_id').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Select Complainant (Resident)',
+    })
+
+    $('.nres_comp_id').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Select Complainant (Non-Resident)',
+    })
+
+    $('.com_id').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Nature of The Case (Complaint Type)',
+    })
 
     $('[data-mask]').inputmask();
 });
