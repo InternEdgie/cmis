@@ -1,12 +1,13 @@
 <div class="modal fade" id="fileComplaintModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="post" id="insertComType">
+            <form method="post" id="insertFileComplaint">
                 <div class="modal-header" style="border-top: 5px solid red">
-                    <h5 class="modal-title"><i class="fas fa-file-alt mr-2"></i>FILE COMPLAINT</h5>
+                    <h5 class="modal-title"><i class="fas fa-file-alt mr-2"></i>FILE COMPLAINT <span class="border-left pl-3 ml-2 border-dark"><?= $fc_id ?></span></h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" name="fc_id" id="fc_id" value="<?= $fc_id ?>" class="form-control" readonly>
                     <div class="bs-stepper linear">
                         <div class="bs-stepper-header" role="tablist">
                             <div class="step active" data-target="#respondent-part">
@@ -30,7 +31,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="bs-stepper-content">
+                        <div class="bs-stepper-content mt-3">
                             <div id="respondent-part" class="content active" role="tabpanel" aria-labelledby="respondent-part-trigger">
                                 <select name="resp_id" id="resp_id" class="form-control resp_id" required>
                                     <option value="" selected disabled></option>
@@ -81,7 +82,7 @@
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label for="res_gender">Gender: <span class="text-danger">*</span></label>
-                                                <select class="form-control" id="res_gender" name="res_gender" required disabled>
+                                                <select class="form-control" id="res_gender" name="res_gender" disabled>
                                                     <option value="" disabled selected>Gender</option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -91,7 +92,7 @@
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label for="res_cstatus">Civil Status: <span class="text-danger">*</span></label>
-                                                <select class="form-control" id="res_cstatus" name="res_cstatus" required disabled>
+                                                <select class="form-control" id="res_cstatus" name="res_cstatus" disabled>
                                                     <option value="" disabled selected>Civil Status</option>
                                                     <option value="Single">Single</option>
                                                     <option value="Married">Married</option>
@@ -121,10 +122,11 @@
                             </div>
                             <div id="complainant-part" class="content" role="tabpanel" aria-labelledby="complainant-part-trigger">
                                 <select name="fc_type" id="fc_type" class="form-control fc_type" required>
-                                    <option value="" selected disabled></option>
+                                    <option value="" selected disabled>Complainant Type</option>
                                     <option value="0">Resident</option>
                                     <option value="1">Non-Resident</option>
                                 </select>
+                                
                                 <div class="mt-3 d-none" id="select-res-complainant">
                                     <select name="res_comp_id" id="res_comp_id" class="form-control res_comp_id" disabled>
                                         <option value="" selected disabled></option>
@@ -175,7 +177,7 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label for="res_gender">Gender: <span class="text-danger">*</span></label>
-                                                    <select class="form-control" id="comp_res_gender" name="comp_res_gender" required disabled>
+                                                    <select class="form-control" id="comp_res_gender" name="comp_res_gender" disabled>
                                                         <option value="" disabled selected>Gender</option>
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
@@ -185,7 +187,7 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label for="res_cstatus">Civil Status: <span class="text-danger">*</span></label>
-                                                    <select class="form-control" id="comp_res_cstatus" name="comp_res_cstatus" required disabled>
+                                                    <select class="form-control" id="comp_res_cstatus" name="comp_res_cstatus" disabled>
                                                         <option value="" disabled selected>Civil Status</option>
                                                         <option value="Single">Single</option>
                                                         <option value="Married">Married</option>
@@ -198,9 +200,9 @@
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label for="zone">Zone: <span class="text-danger">*</span></label>
-                                                    <select class="form-control select2 form-select" id="comp_zone_id" name="comp_zone_id" required disabled>
+                                                    <select class="form-control select2 form-select" id="comp_zone_id" name="comp_zone_id" disabled>
                                                         <option value="" disabled selected>Select Zone</option>
-                                                        <?php while ($zone_data = $zone_list->fetch_assoc()) : ?>
+                                                        <?php while ($zone_data = $zone_list2->fetch_assoc()) : ?>
                                                             <option value="<?= $zone_data['zone_id'] ?>"><?= $zone_data['zone_name'] ?></option>
                                                         <?php endwhile; ?>
                                                     </select>
@@ -225,13 +227,121 @@
                                     </select>
                                     <div class="border-top mt-3 pt-3 d-none" id="add-non-resident-complainant">
                                         <div class="text-center h4 mb-3">Non-Resident Information (Complainant)</div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="nres_fname">First Name: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="First Name" id="nres_fname" name="nres_fname" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="nres_mname">Middle Name:</label>
+                                                    <input type="text" class="form-control" placeholder="Middle Name" id="nres_mname" name="nres_mname" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="nres_lname">Last Name: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Last Name" id="nres_lname" name="nres_lname" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="nres_suffix">Suffix:</label>
+                                                    <input type="text" class="form-control" placeholder="Suffix" id="nres_suffix" name="nres_suffix" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label for="nres_birthday">Birthday: <span class="text-danger">*</span></label>
+                                                    <input type="date" class="form-control" id="nres_birthday" name="nres_birthday" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label for="nres_gender">Gender: <span class="text-danger">*</span></label>
+                                                    <select class="form-control" id="nres_gender" name="nres_gender" disabled>
+                                                        <option value="" disabled selected>Gender</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label for="nres_cstatus">Civil Status: <span class="text-danger">*</span></label>
+                                                    <select class="form-control" id="nres_cstatus" name="nres_cstatus" disabled>
+                                                        <option value="" disabled selected>Civil Status</option>
+                                                        <option value="Single">Single</option>
+                                                        <option value="Married">Married</option>
+                                                        <option value="Widowed">Widowed</option>
+                                                        <option value="Divorced">Divorced</option>
+                                                        <option value="Separated">Separated</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label for="nres_citizenship_id">Citizenship: <span class="text-danger">*</span></label>
+                                                    <select class="form-control select2 form-select" id="nres_citizenship_id" name="nres_citizenship_id" disabled>
+                                                        <option value="" disabled selected>Citizenship</option>
+                                                        <?php while ($cdata = $citizenship->fetch_assoc()): ?>
+                                                            <option value="<?= $cdata['citizenship_id'] ?>"><?= $cdata['citizenship_name'] ?></option>
+                                                        <?php endwhile; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <label for="nres_zone">Zone: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Zone" id="nres_zone" name="nres_zone" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <label for="nres_barangay">Barangay: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Barangay" id="nres_barangay" name="nres_barangay" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    <label for="nres_city">Municipality: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Municipality" id="nres_city" name="nres_city" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-10">
+                                                <div class="form-group">
+                                                    <label for="nres_province">Province: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Province" id="nres_province" name="nres_province" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <label for="nres_zcode">Zip Code:</label>
+                                                    <input type="text" class="form-control" placeholder="Zip Code" id="nres_zcode" name="nres_zcode" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nres_contact">Contact Number: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" data-inputmask='"mask": "9999-999-9999"' placeholder="Contact Number" id="nres_contact" name="nres_contact" data-mask disabled>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="other-part" class="content" role="tabpanel" aria-labelledby="other-part-trigger">
                                 <select name="com_id" id="com_id" class="form-control com_id" required>
                                     <option value="" selected disabled></option>
-                                    <option value="0">&oplus; Add Resident</option>
+                                    <option value="0">&oplus; Add Complaint Type</option>
                                     <?php if ($complaint_type->num_rows > 0) : ?>
                                         <?php while ($row = $complaint_type->fetch_assoc()) : ?>
                                             <option value="<?= $row['com_id'] ?>"><?= $row['com_name'] ?></option>
@@ -239,8 +349,7 @@
                                     <?php endif; ?>
                                 </select>
                                 <div class="form-group mt-3">
-                                    <label for="">Reason for Complaint</label>
-                                    <textarea name="fc_statement" id="fc_statement" rows="3" class="form-control" placeholder="Reason for Complaint"></textarea>
+                                    <textarea name="fc_statement" id="fc_statement" rows="3" class="form-control" placeholder="Reason for Complaint" required></textarea>
                                 </div>
                                 
                             </div>
@@ -257,7 +366,7 @@
                     </div>
                     <div id="third_step" class="d-none">
                         <button class="btn btn-primary prev" id="second_prev" onclick="stepper.previous()" disabled>Previous</button>
-                        <button type="submit" class="btn btn-primary" disabled>Submit</button>
+                        <button type="submit" class="btn btn-primary" id="submit" name="submit" disabled>Submit</button>
                     </div>
                 </div>
             </form>
