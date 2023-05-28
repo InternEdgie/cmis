@@ -20,7 +20,7 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 	$last_year = date('Y', strtotime($rfc['fc_regdatetime']));
 	$last_id = substr($rfc['fc_id'], 0, 3);
 
-	for ($i=1; ;$i++) {
+	for ($i = 1;; $i++) {
 		if ($current_year != $last_year) {
 			$id = $i;
 		} else {
@@ -37,18 +37,28 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 	$fc_id = sprintf('%03d', 1) . '-' . $current_year;
 }
 ?>
-<div id="content">
 
+<!-- Content Header (Page header) -->
+<div class="content-header">
 	<div class="container-fluid">
-		<div class="d-sm-flex align-items-center justify-content-between mb-4">
-			<h1 class="h3 mb-0 text-gray-800">FILE COMPLAINTS </h1>
-			<a href="#" class="btn btn-sm btn-danger btn-icon-split shadow-sm" data-toggle="modal" data-target="#fileComplaintModal">
-				<span class="icon text-white-50">
-					<i class="fas fa-file-alt"></i>
-				</span>
-				<span class="text">File Complaint</span>
-			</a>
-		</div>
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0">File Complaints</h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6 align-self-center text-right">
+				<a href="#" class="btn btn-sm btn-danger btn-icon-split shadow-sm" data-toggle="modal" data-target="#fileComplaintModal">
+					<span class="icon text-white-50">
+						<i class="fas fa-file-alt"></i>
+					</span>
+					<span class="text">File Complaint</span>
+				</a>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
+</div>
+
+<section class="content pb-5">
+	<div class="container-fluid">
 		<div class="card shadow mb-4">
 			<div class="card-header py-3 bg-danger">
 				<h6 class="m-0 font-weight-bold text-white">LIST OF FILED COMPLAINTS</h6>
@@ -56,7 +66,7 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 			<div class="card-body">
 				<div class="table-responsive">
 					<table class="table table-striped table-hover" id="table_desc" width="100%">
-						<thead class="bg-gray-900 text-white">
+						<thead>
 							<tr>
 								<th>Entry No.</th>
 								<th>Complainant</th>
@@ -132,19 +142,19 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 									<td>
 										<?php
 										if ($check_sched->num_rows > 0) {
-											?>
+										?>
 											<a href="#" class="btn btn-sm btn-success shadow-sm"><i class="bi bi-calendar-check"></i></a>
-											<?php
+										<?php
 										} else {
-											?>
+										?>
 											<a href="#" class="btn btn-sm btn-secondary shadow-sm"><i class="bi bi-calendar-x text-white-50"></i></a>
-											<?php
+										<?php
 										}
 
 										if ($_SESSION['role'] == 1) {
-											?>
+										?>
 											<a href="#" class="btn btn-sm btn-primary shadow-sm"><i class="bi bi-printer"></i></a>
-											<?php
+										<?php
 										}
 										?>
 										<a href="view-file-complaint.php?id=<?= $row['fc_id'] ?>" class="btn btn-sm btn-info shadow-sm"><i class="bi bi-info-circle fa-sm"></i></a>
@@ -152,7 +162,7 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 								</tr>
 							<?php endwhile; ?>
 						</tbody>
-						<tfoot class="bg-gray-900 text-white">
+						<tfoot>
 							<tr>
 								<th>Entry No.</th>
 								<th>Complainant</th>
@@ -167,20 +177,45 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
 <script>
 	$(document).ready(function() {
-
 		$('#first_next').on('click', function(e) {
 			e.preventDefault()
 			$('#second_step').removeClass('d-none')
 			$('#first_step').addClass('d-none')
 			$('#first_prev').removeAttr('disabled')
+
+			$('#respondent_label').addClass('d-none')
+			$('#complainant_label').removeClass('d-none')
+			$('#other_details_label').addClass('d-none')
+			var resp_id = $('#resp_id').val()
+			console.log(resp_id)
+			if (resp_id != 0) {
+				$('#res_comp_id option').prop('disabled', false);
+				$('#res_comp_id option[value=' + resp_id + ']').prop('disabled', true);
+			} else {
+				$('#res_comp_id option').prop('disabled', false);
+			}
 		})
 		$('#first_prev').on('click', function(e) {
 			e.preventDefault()
 			$('#second_step').addClass('d-none')
 			$('#first_step').removeClass('d-none')
+
+			$('#respondent_label').removeClass('d-none')
+			$('#complainant_label').addClass('d-none')
+			$('#other_details_label').addClass('d-none')
+
+			var res_comp_id = $('#res_comp_id').val()
+			console.log(res_comp_id)
+			if (res_comp_id != 0) {
+				$('#resp_id option').prop('disabled', false);
+				$('#resp_id option[value=' + res_comp_id + ']').prop('disabled', true);
+			} else {
+				$('#resp_id option').prop('disabled', false);
+			}
 		})
 		$('#second_next').on('click', function(e) {
 			e.preventDefault()
@@ -188,119 +223,32 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 			$('#second_step').addClass('d-none')
 			$('#second_prev').removeAttr('disabled')
 
+			$('#respondent_label').addClass('d-none')
+			$('#complainant_label').addClass('d-none')
+			$('#other_details_label').removeClass('d-none')
 		})
 		$('#second_prev').on('click', function(e) {
 			e.preventDefault()
 			$('#third_step').addClass('d-none')
 			$('#second_step').removeClass('d-none')
+
+			$('#respondent_label').addClass('d-none')
+			$('#complainant_label').removeClass('d-none')
+			$('#other_details_label').addClass('d-none')
 		})
 
 		$('#resp_id').on('change', function() {
 			var resp_id = $(this).val()
-			if (resp_id == 0) {
-				$('#add-resident-respondent').removeClass('d-none')
-				$('#res_fname').attr('required', '')
-				$('#res_lname').attr('required', '')
-				$('#res_birthday').attr('required', '')
-				$('#res_gender').attr('required', '')
-				$('#res_cstatus').attr('required', '')
-				$('#zone_id').attr('required', '')
-				$('#res_contact').attr('required', '')
 
-				$('#first_next').attr('disabled', '')
-
-				$('#res_fname').removeAttr('disabled')
-				$('#res_mname').removeAttr('disabled')
-				$('#res_lname').removeAttr('disabled')
-				$('#res_suffix').removeAttr('disabled')
-				$('#res_birthday').removeAttr('disabled')
-				$('#res_gender').removeAttr('disabled')
-				$('#res_cstatus').removeAttr('disabled')
-				$('#zone_id').removeAttr('disabled')
-				$('#res_contact').removeAttr('disabled')
-			} else {
-				$('#add-resident-respondent').addClass('d-none')
-				$('#res_fname').removeAttr('required')
-				$('#res_lname').removeAttr('required')
-				$('#res_birthday').removeAttr('required')
-				$('#res_gender').removeAttr('required')
-				$('#res_cstatus').removeAttr('required')
-				$('#zone_id').removeAttr('required')
-				$('#res_contact').removeAttr('required')
-
-				$('#first_next').removeAttr('disabled')
-
-				$('#res_fname').attr('disabled', '')
-				$('#res_mname').attr('disabled', '')
-				$('#res_lname').attr('disabled', '')
-				$('#res_suffix').attr('disabled', '')
-				$('#res_birthday').attr('disabled', '')
-				$('#res_gender').attr('disabled', '')
-				$('#res_cstatus').attr('disabled', '')
-				$('#zone_id').attr('disabled', '')
-				$('#res_contact').attr('disabled', '')
-
-				
-
-				// if (val != '') {
-				// 	none.style.visibility = "visible";
-				// 	document.getElementById('com').removeAttribute('disabled');
-				// 	document.getElementById('comp1').removeAttribute('disabled');
-				// 	document.getElementById('submit').removeAttribute('disabled');
-				// 	$('#res_comp_id').removeAttribute('disabled')
-				// }
-			}
-
-			if ($('#res_fname').val() != '' && $('#res_lname').val() != '' && $('#res_birthday').val() != '' && $('#res_gender').val() != '' && $('#res_cstatus').val() != '' && $('#zone_id').val() != '' && $('#res_contact').val() != '') {
-				$('#first_next').removeAttr('disabled')
-			}
+			$('#first_next').removeAttr('disabled')
 
 
-		})
-		$('.bs-stepper-content').find('#add-resident-respondent input, #add-resident-respondent select').on('change', function() {
-			var isStepValid = true;
-			$('.bs-stepper-content').find('#add-resident-respondent input[required], #add-resident-respondent select[required]').each(function() {
-				if ($(this).is('select')) { // if input is a select tag
-					if (!$(this).val()) { // if select tag has no selected value
-						isStepValid = false;
-						return false; // break out of each loop early
-					}
-				} else if ($(this).val() === '') { // if input is empty
-					isStepValid = false;
-				}
-			});
-
-			if (isStepValid) {
-				$('#first_next').removeAttr('disabled')
-			} else {
-				$('#first_next').attr('disabled', '')
-			}
-		})
-
-		$('.bs-stepper-content').find('#add-resident-complainant input, #add-resident-complainant select').on('change', function() {
-			var isStepValid = true;
-			$('.bs-stepper-content').find('#add-resident-complainant input[required], #add-resident-complainant select[required]').each(function() {
-				if ($(this).is('select')) { // if input is a select tag
-					if (!$(this).val()) { // if select tag has no selected value
-						isStepValid = false;
-						return false; // break out of each loop early
-					}
-				} else if ($(this).val() === '') { // if input is empty
-					isStepValid = false;
-				}
-			});
-
-			if (isStepValid) {
-				$('#second_next').removeAttr('disabled')
-			} else {
-				$('#second_next').attr('disabled', '')
-			}
 		})
 
 		$('.bs-stepper-content').find('#complainant-part input, #complainant-part select').on('change', function() {
 			var isStepValid = true;
 			$('.bs-stepper-content').find('#complainant-part input[required], #complainant-part select[required]').each(function() {
-				if ($(this).is('select')) { // if input is a select tag
+				if ($(this).is('select')) { // if input is a select
 					if (!$(this).val()) { // if select tag has no selected value
 						isStepValid = false;
 						return false; // break out of each loop early
@@ -339,212 +287,49 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 
 		$('#fc_type').on('change', function() {
 			var fc_type = $(this).val()
-
-			if ($('#res_comp_id').val() === null || $('#nres_comp_id').val() === null) {
-				$('#second_next').attr('disabled', '')
-			} else {
-				$('#second_next').removeAttr('disabled')
-			}
+			var isStepValid = true;
 
 			if (fc_type == 0) {
 				$('#select-res-complainant').removeClass('d-none')
 				$('#select-nres-complainant').addClass('d-none')
 				$('#res_comp_id').removeAttr('disabled')
+				$('#res_comp_id').attr('required', '')
 				$('#nres_comp_id').attr('disabled', '')
+				$('#nres_comp_id').removeAttr('required')
 
-				$('#nres_fname').attr('disabled', '')
-				$('#nres_mname').attr('disabled', '')
-				$('#nres_lname').attr('disabled', '')
-				$('#nres_suffix').attr('disabled', '')
-				$('#nres_birthday').attr('disabled', '')
-				$('#nres_gender').attr('disabled', '')
-				$('#nres_cstatus').attr('disabled', '')
-				$('#nres_citizenship_id').attr('disabled', '')
-				$('#nres_zone').attr('disabled', '')
-				$('#nres_barangay').attr('disabled', '')
-				$('#nres_city').attr('disabled', '')
-				$('#nres_province').attr('disabled', '')
-				$('#nres_zcode').attr('disabled', '')
-				$('#nres_contact').attr('disabled', '')
-
-			} else {
+				$('.bs-stepper-content').find('#select-res-complainant input[required], #select-res-complainant select[required]').each(function() {
+					if ($('#select-res-complainant input, #select-res-complainant select').is('select')) { // if input is a select
+						if (!$('#select-res-complainant input, #select-res-complainant select').val()) { // if select tag has no selected value
+							isStepValid = false;
+							return false; // break out of each loop early
+						}
+					} else if ($('#select-res-complainant input, #select-res-complainant select').val() === '') { // if input is empty
+						isStepValid = false;
+					}
+				})
+			} else if (fc_type == 1) {
 				$('#select-res-complainant').addClass('d-none')
 				$('#select-nres-complainant').removeClass('d-none')
 				$('#res_comp_id').attr('disabled', '')
+				$('#res_comp_id').removeAttr('required')
 				$('#nres_comp_id').removeAttr('disabled')
+				$('#nres_comp_id').attr('required', '')
 
-				$('#comp_res_fname').attr('disabled', '')
-				$('#comp_res_mname').attr('disabled', '')
-				$('#comp_res_lname').attr('disabled', '')
-				$('#comp_res_suffix').attr('disabled', '')
-				$('#comp_res_birthday').attr('disabled', '')
-				$('#comp_res_gender').attr('disabled', '')
-				$('#comp_res_cstatus').attr('disabled', '')
-				$('#comp_zone_id').attr('disabled', '')
-				$('#comp_res_contact').attr('disabled', '')
+				$('.bs-stepper-content').find('#select-nres-complainant input[required], #select-nres-complainant select[required]').each(function() {
+					if ($('#select-nres-complainant input, #select-nres-complainant select').is('select')) { // if input is a select
+						if (!$('#select-nres-complainant input, #select-nres-complainant select').val()) { // if select tag has no selected value
+							isStepValid = false;
+							return false; // break out of each loop early
+						}
+					} else if ($('#select-nres-complainant input, #select-nres-complainant select').val() === '') { // if input is empty
+						isStepValid = false;
+					}
+				})
 			}
-
-			// if ($('#res_comp_id').val() == 0 && $('#comp_res_fname').val() != '' && $('#comp_res_lname').val() != '' && $('#comp_res_birthday').val() && $('#comp_res_gender').val() != '' && $('#comp_res_cstatus').val() != '' && $('#comp_zone_id').val() != '' && $('#comp_res_contact').val() != '') {
-			// 	$('#comp_res_fname').removeAttr('disabled')
-			// 	$('#comp_res_mname').removeAttr('disabled')
-			// 	$('#comp_res_lname').removeAttr('disabled')
-			// 	$('#comp_res_suffix').removeAttr('disabled')
-			// 	$('#comp_res_birthday').removeAttr('disabled')
-			// 	$('#comp_res_gender').removeAttr('disabled')
-			// 	$('#comp_res_cstatus').removeAttr('disabled')
-			// 	$('#comp_zone_id').removeAttr('disabled')
-			// 	$('#comp_res_contact').removeAttr('disabled')
-
-			// 	$('#second_next').removeAttr('disabled')
-			// } else {
-			// 	$('#comp_res_fname').removeAttr('disabled')
-			// 	$('#comp_res_mname').removeAttr('disabled')
-			// 	$('#comp_res_lname').removeAttr('disabled')
-			// 	$('#comp_res_suffix').removeAttr('disabled')
-			// 	$('#comp_res_birthday').removeAttr('disabled')
-			// 	$('#comp_res_gender').removeAttr('disabled')
-			// 	$('#comp_res_cstatus').removeAttr('disabled')
-			// 	$('#comp_zone_id').removeAttr('disabled')
-			// 	$('#comp_res_contact').removeAttr('disabled')
-
-			// 	$('#second_next').attr('disabled')
-			// }
-
-			// if ($('#nres_comp_id').val() == 0) {
-			// 	$('#nres_fname').removeAttr('disabled')
-			// 	$('#nres_mname').removeAttr('disabled')
-			// 	$('#nres_lname').removeAttr('disabled')
-			// 	$('#nres_suffix').removeAttr('disabled')
-			// 	$('#nres_birthday').removeAttr('disabled')
-			// 	$('#nres_gender').removeAttr('disabled')
-			// 	$('#nres_cstatus').removeAttr('disabled')
-			// 	$('#nres_citizenship_id').removeAttr('disabled')
-			// 	$('#nres_zone').removeAttr('disabled')
-			// 	$('#nres_barangay').removeAttr('disabled')
-			// 	$('#nres_city').removeAttr('disabled')
-			// 	$('#nres_province').removeAttr('disabled')
-			// 	$('#nres_zcode').removeAttr('disabled')
-			// 	$('#nres_contact').removeAttr('disabled')
-			// }
-		})
-
-		$('#res_comp_id').on('change', function() {
-			var res_comp = $(this).val()
-
-			if (res_comp == 0) {
-				$('#add-resident-complainant').removeClass('d-none')
-
-				$('#comp_res_fname').attr('required', '')
-				$('#comp_res_lname').attr('required', '')
-				$('#comp_res_birthday').attr('required', '')
-				$('#comp_res_gender').attr('required', '')
-				$('#comp_res_cstatus').attr('required', '')
-				$('#comp_zone_id').attr('required', '')
-				$('#comp_res_contact').attr('required', '')
-
-				$('#second_next').attr('disabled', '')
-
-				$('#comp_res_fname').removeAttr('disabled')
-				$('#comp_res_mname').removeAttr('disabled')
-				$('#comp_res_lname').removeAttr('disabled')
-				$('#comp_res_suffix').removeAttr('disabled')
-				$('#comp_res_birthday').removeAttr('disabled')
-				$('#comp_res_gender').removeAttr('disabled')
-				$('#comp_res_cstatus').removeAttr('disabled')
-				$('#comp_zone_id').removeAttr('disabled')
-				$('#comp_res_contact').removeAttr('disabled')
-			} else {
-				$('#add-resident-complainant').addClass('d-none')
-
-				$('#comp_res_fname').removeAttr('required')
-				$('#comp_res_lname').removeAttr('required')
-				$('#comp_res_birthday').removeAttr('required')
-				$('#comp_res_gender').removeAttr('required')
-				$('#comp_res_cstatus').removeAttr('required')
-				$('#comp_zone_id').removeAttr('required')
-				$('#comp_res_contact').removeAttr('required')
-
+			if (isStepValid) {
 				$('#second_next').removeAttr('disabled')
-
-				$('#comp_res_fname').attr('disabled', '')
-				$('#comp_res_mname').attr('disabled', '')
-				$('#comp_res_lname').attr('disabled', '')
-				$('#comp_res_suffix').attr('disabled', '')
-				$('#comp_res_birthday').attr('disabled', '')
-				$('#comp_res_gender').attr('disabled', '')
-				$('#comp_res_cstatus').attr('disabled', '')
-				$('#comp_zone_id').attr('disabled', '')
-				$('#comp_res_contact').attr('disabled', '')
-			}
-		})
-
-		$('#nres_comp_id').on('change', function() {
-			var nres_comp = $(this).val()
-
-			if (nres_comp == 0) {
-				$('#add-non-resident-complainant').removeClass('d-none')
-
-				$('#nres_fname').attr('required', '')
-				$('#nres_lname').attr('required', '')
-				$('#nres_birthday').attr('required', '')
-				$('#nres_gender').attr('required', '')
-				$('#nres_cstatus').attr('required', '')
-				$('#nres_citizenship_id').attr('required', '')
-				$('#nres_zone').attr('required', '')
-				$('#nres_barangay').attr('required', '')
-				$('#nres_city').attr('required', '')
-				$('#nres_province').attr('required', '')
-				$('#nres_zcode').attr('required', '')
-				$('#nres_contact').attr('required', '')
-
-				$('#second_next').attr('disabled', '')
-
-				$('#nres_fname').removeAttr('disabled')
-				$('#nres_mname').removeAttr('disabled')
-				$('#nres_lname').removeAttr('disabled')
-				$('#nres_suffix').removeAttr('disabled')
-				$('#nres_birthday').removeAttr('disabled')
-				$('#nres_gender').removeAttr('disabled')
-				$('#nres_cstatus').removeAttr('disabled')
-				$('#nres_citizenship_id').removeAttr('disabled')
-				$('#nres_zone').removeAttr('disabled')
-				$('#nres_barangay').removeAttr('disabled')
-				$('#nres_city').removeAttr('disabled')
-				$('#nres_province').removeAttr('disabled')
-				$('#nres_zcode').removeAttr('disabled')
-				$('#nres_contact').removeAttr('disabled')
 			} else {
-				$('#add-non-resident-complainant').addClass('d-none')
-
-				$('#nres_fname').removeAttr('required',)
-				$('#nres_lname').removeAttr('required',)
-				$('#nres_birthday').removeAttr('required')
-				$('#nres_gender').removeAttr('required')
-				$('#nres_cstatus').removeAttr('required')
-				$('#nres_citizenship_id').removeAttr('required')
-				$('#nres_zone').removeAttr('required')
-				$('#nres_barangay').removeAttr('required')
-				$('#nres_city').removeAttr('required')
-				$('#nres_province').removeAttr('required')
-				$('#nres_zcode').removeAttr('required')
-				$('#nres_contact').removeAttr('required')
-
-				$('#second_next').removeAttr('disabled')
-
-				$('#nres_fname').attr('disabled', '')
-				$('#nres_mname').attr('disabled', '')
-				$('#nres_lname').attr('disabled', '')
-				$('#nres_suffix').attr('disabled', '')
-				$('#nres_birthday').attr('disabled', '')
-				$('#nres_gender').attr('disabled', '')
-				$('#nres_cstatus').attr('disabled', '')
-				$('#nres_citizenship_id').attr('disabled', '')
-				$('#nres_zone').attr('disabled', '')
-				$('#nres_barangay').attr('disabled', '')
-				$('#nres_city').attr('disabled', '')
-				$('#nres_province').attr('disabled', '')
-				$('#nres_zcode').attr('disabled', '')
-				$('#nres_contact').attr('disabled', '')
+				$('#second_next').attr('disabled', '')
 			}
 		})
 
@@ -552,47 +337,223 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 			e.preventDefault();
 			var insertFileComplaint = $('#insertFileComplaint').serialize();
 			console.log(insertFileComplaint)
-			// swal.fire({
-			// 	title: "Continue filing this complaint?",
-			// 	icon: 'question',
-			// 	showCancelButton: !0,
-			// 	confirmButtonText: "Yes, continue!",
-			// 	confirmButtonColor: '#4e73df',
-			// 	cancelButtonText: "No, wait go back!",
-			// 	reverseButtons: !0
-			// }).then(function(e) {
-			// 	if (e.value === true) {
-			// 		$.ajax({
-			// 			type: 'POST',
-			// 			url: "config/queries/add-complaint-query.php",
-			// 			data: insertFileComplaint,
-			// 			success: function(data) {
-			// 				var response = JSON.parse(data);
-			// 				console.log(response);
-			// 				if (response.success_flag == 0) {
-			// 					toastr.error(response.message)
-			// 				} else {
-			// 					toastr.success(response.message);
+			swal.fire({
+				title: "Continue filing this complaint?",
+				icon: 'warning',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#dc3545',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-complaint-query.php",
+						data: insertFileComplaint,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(data);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
 
-			// 					setTimeout(function() {
-			// 						window.location.reload();
-			// 					}, 2000);
-			// 				}
-			// 			}
-			// 		});
-			// 	} else {
-			// 		e.dismiss;
-			// 	}
-			// }, function(dismiss) {
-			// 	return false;
-			// })
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
 		})
+		$('.add-resident-respondent, .add-resident-complainant').on('click', function(e) {
+			e.preventDefault()
+			$('#addResidentModal').modal('show')
+			$('#fileComplaintModal').modal('hide')
+		})
+		$('.add-non-resident').on('click', function(e) {
+			e.preventDefault()
+			$('#addNonResidentModal').modal('show')
+			$('#fileComplaintModal').modal('hide')
+		})
+		$('.add-complaint-type').on('click', function(e) {
+			e.preventDefault()
+			$('#addComplaintTypeModal').modal('show')
+			$('#fileComplaintModal').modal('hide')
+		})
+		$('#insertResident').on('submit', function(e) {
+			e.preventDefault();
+			var insertResident = $('#insertResident').serialize();
+			console.log(insertResident)
+			swal.fire({
+				title: "Continue adding new record of resident?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#4e73df',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-resident-query.php",
+						data: insertResident,
+						success: function(data) {
+							var response = JSON.parse(data);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
+								if ($('#resp_id').val() == '') {
+									var selectElement = $('.resp_id');
+									var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
+									selectElement.append(newOption).trigger('change');
+
+									var secondElement = $('.res_comp_id')
+									var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
+									secondElement.append(secondOption).trigger('change');
+								}
+
+								if ($('#res_comp_id').val() == '') {
+									var selectElement = $('.res_comp_id');
+									var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
+									selectElement.append(newOption).trigger('change');
+
+									var secondElement = $('.resp_id')
+									var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
+									secondElement.append(secondOption).trigger('change');
+								}
+
+								setTimeout(function() {
+									$('#fileComplaintModal').modal('show')
+									$('#addResidentModal').modal('hide')
+
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
+
+		$('#insertNonResident').on('submit', function(e) {
+			e.preventDefault();
+			var insertNonResident = $('#insertNonResident').serialize();
+			console.log(insertNonResident)
+			swal.fire({
+				title: "Continue adding new record of non-resident?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#4e73df',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-non-resident-query.php",
+						data: insertNonResident,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
+								var selectElement = $('.nres_comp_id');
+								var newOption = new Option(response.nres_lname + ', ' + response.nres_fname, response.nres_id, true, true);
+								selectElement.append(newOption).trigger('change');
+
+								setTimeout(function() {
+									$('#fileComplaintModal').modal('show')
+									$('#addNonResidentModal').modal('hide')
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
+
+		$('#insertComType').on('submit', function(e) {
+			e.preventDefault();
+			var insertComType = $('#insertComType').serialize();
+			console.log(insertComType)
+			swal.fire({
+				title: "Continue adding new record of complaint type?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#4e73df',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-complaint-type-query.php",
+						data: insertComType,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
+
+								var selectElement = $('.com_id');
+								var newOption = new Option(response.com_name, response.com_id, true, true);
+								selectElement.append(newOption).trigger('change');
+
+								setTimeout(function() {
+									$('#fileComplaintModal').modal('show')
+									$('#addComplaintTypeModal').modal('hide')
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
+		$('#addResidentModal, #addNonResidentModal, #addComplaintTypeModal').on('hide.bs.modal', function() {
+			$('#fileComplaintModal').modal('show')
+		})
+		// $('#addNonResidentModal').on('hide.bs.modal', function() {
+		// 	$('#fileComplaintModal').modal('show')
+		// })
+		// $('#addComplaintTypeModal').on('hide.bs.modal', function() {
+		// 	$('#fileComplaintModal'),modal('show')
+		// })
 	})
-document.addEventListener('DOMContentLoaded', function() {
-	window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-})
+	document.addEventListener('DOMContentLoaded', function() {
+		window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+	})
 </script>
+
 <?php
+include 'assets/modals/add-residents-modal.php';
+include 'assets/modals/add-non-resident-modal.php';
+include 'assets/modals/add-complaint-type-modal.php';
 include 'assets/modals/add-complaint-modal.php';
 include 'layouts/footer.php';
 ?>

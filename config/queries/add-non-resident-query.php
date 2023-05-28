@@ -41,6 +41,8 @@ if ($connection->query($nresident_query) === TRUE) {
 	}
 	$message = "<b>" . $first_name . ' ' . $middle_name . ' ' . $last_name . "</b> has been added to the non-resident record.";
 	$flag = 1;
+
+	$nres = $connection->query("SELECT * FROM tbl_non_residents ORDER BY nres_id DESC LIMIT 1")->fetch_assoc();
 } else {
 	$message = "Something went wrong. Please try again later.";
 	$flag = 0;
@@ -48,4 +50,9 @@ if ($connection->query($nresident_query) === TRUE) {
 
 $response['message'] = $message;
 $response['success_flag'] = $flag;
+if ($nres != '') {
+	$response['nres_id'] = $nres['nres_id'];
+	$response['nres_lname'] = $nres['nres_lname'];
+	$response['nres_fname'] = $nres['nres_fname'];
+}
 exit(json_encode($response));

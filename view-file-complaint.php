@@ -29,160 +29,113 @@ if ($schedules->num_rows == 3) {
 // $status = $connection->query("SELECT * FROM tbl_status WHERE status_id = '$status_id'")->fetch_assoc();
 
 ?>
-<div id="content">
+<div class="content-header">
     <div class="container-fluid">
-        <div class="d-sm-flex align-items-center mb-4">
-            <div class="breadcrumb-item"><a href="file-complaint.php">File Complaints</a></div>
-            <div class="breadcrumb-item active">Complaint Viewing</div>
-            <button href="#" class="ml-auto btn btn-sm btn-primary btn-icon-split shadow-sm" id="print">
-                <span class="icon">
-                    <i class="bi bi-printer"></i>
-                </span>
-                <span class="text">Print</span>
-            </button>
-            <a href="#" id="edit" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm" data-toggle="modal" data-target="#editResidentModal">
-                <span class="icon">
-                    <i class="bi bi-pencil-square"></i>
-                </span>
-                <span class="text">Edit</span>
-            </a>
-            <a href="#" id="cancel" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm d-none" data-toggle="modal" data-target="#editResidentModal">
-                <span class="icon">
-                    <i class="bi bi-x-circle-fill"></i>
-                </span>
-                <span class="text">Cancel</span>
-            </a>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="file-complaint.php">File Complaints</a></li>
+                    <li class="breadcrumb-item active">Complaint Viewing</li>
+                </ol>
+            </div><!-- /.col -->
+            <div class="col-sm-6 align-self-center text-right">
+                <button href="#" class="ml-auto btn btn-sm btn-primary btn-icon-split shadow-sm" id="print">
+                    <span class="icon">
+                        <i class="bi bi-printer"></i>
+                    </span>
+                    <span class="text">Print</span>
+                </button>
+                <a href="#" id="edit" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm" data-toggle="modal" data-target="#editResidentModal">
+                    <span class="icon">
+                        <i class="bi bi-pencil-square"></i>
+                    </span>
+                    <span class="text">Edit</span>
+                </a>
+                <a href="#" id="cancel" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm d-none" data-toggle="modal" data-target="#editResidentModal">
+                    <span class="icon">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </span>
+                    <span class="text">Cancel</span>
+                </a>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content pb-5" id="printThis">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold card-title title">COMPLAINT INFORMATION</h6>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <dt>ENTRY NO.</dt>
+                            <dd><?= $row['fc_id'] ?></dd>
+                        </div>
+                        <div class="col-md-4">
+                            <dt>NATURE OF THE CASE</dt>
+                            <dd><?= $row['com_name'] ?></dd>
+                        </div>
+                        <div class="col-md-4">
+                            <dt>DATE & TIME FILED</dt>
+                            <dd><?= date('F d, Y - h:i A', strtotime($row['fc_regdatetime'])) ?></dd>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <dt>COMPLAINANT</dt>
+                            <dd><?= "<strong>" . $comp_fullname . "</strong><br>" . $comp_address ?></dd>
+                        </div>
+                        <div class="col-md-4">
+                            <dt>RESPONDENT</dt>
+                            <dd><?= "<strong>" . $resp_fullname . '</strong><br>' . $resp_address ?></dd>
+                        </div>
+                        <div class="col-md-4">
+                            <dt>CURRENT STATUS</dt>
+                            <dd><?= $row['status_name'] ?></dd>
+                        </div>
+                    </div>
+                    <dt>REASON OF COMPLAINT</dt>
+                    <dd class="statement"><?= $row['fc_statement'] ?></dd>
+                    <dd class="edit-statement d-none">
+                        <form id="updateStatement" method="POST">
+                            <input type="hidden" value="<?= $id ?>" name="fc_id" id="fc_id">
+                            <textarea class="form-control" name="fc_statement" id="fc_statement" rows="3"><?= $row['fc_statement'] ?></textarea>
+                            <div class="text-right mt-3">
+                                <input type="submit" class="btn btn-sm btn-warning" style="color:black" value="Submit">
+                            </div>
+                        </form>
+                    </dd>
+                </dl>
+            </div>
         </div>
-        <?php include 'config/message.php'; ?>
-        <div id="printThis">
+        <?php if ($schedules->num_rows == 3) : ?>
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold card-title">COMPLAINT INFORMATION</h6>
+                    <h6 class="m-0 font-weight-bold card-title">LUPON SELECTED</h6>
                 </div>
                 <div class="card-body">
-                    <dl>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <dt>ENTRY NO.</dt>
-                                <dd><?= $row['fc_id'] ?></dd>
-                            </div>
-                            <div class="col-md-4">
-                                <dt>NATURE OF THE CASE</dt>
-                                <dd><?= $row['com_name'] ?></dd>
-                            </div>
-                            <div class="col-md-4">
-                                <dt>DATE & TIME FILED</dt>
-                                <dd><?= date('F d, Y - h:i A', strtotime($row['fc_regdatetime'])) ?></dd>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <dt>COMPLAINANT</dt>
-                                <dd><?= "<strong>" . $comp_fullname . "</strong><br>" . $comp_address ?></dd>
-                            </div>
-                            <div class="col-md-4">
-                                <dt>RESPONDENT</dt>
-                                <dd><?= "<strong>" . $resp_fullname . '</strong><br>' . $resp_address ?></dd>
-                            </div>
-                            <div class="col-md-4">
-                                <dt>CURRENT STATUS</dt>
-                                <dd><?= $row['status_name'] ?></dd>
-                            </div>
-                        </div>
-                        <dt>REASON OF COMPLAINT</dt>
-                        <dd class="statement"><?= $row['fc_statement'] ?></dd>
-                        <dd class="edit-statement d-none">
-                            <form id="updateStatement" method="POST">
-                                <input type="hidden" value="<?= $id ?>" name="fc_id" id="fc_id">
-                                <textarea class="form-control" name="fc_statement" id="fc_statement" rows="3"><?= $row['fc_statement'] ?></textarea>
-                                <div class="text-right mt-3">
-                                    <input type="submit" class="btn btn-sm btn-warning" style="color:black" value="Submit">
-                                </div>
-                            </form>
-                        </dd>
-                    </dl>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                            </tr>
+                            <?php while ($row = $schedules->fetch_assoc()) : ?>
+                                <tr>
+                                    <th>$row['']</th>
+                                    <th></th>
+                                </tr>
+                            <?php endwhile; ?>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <?php if ($schedules->num_rows == 3) : ?>
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold card-title">LUPON SELECTED</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                </tr>
-                                <?php while ($row = $schedules->fetch_assoc()) : ?>
-                                    <tr>
-                                        <th>$row['']</th>
-                                        <th></th>
-                                    </tr>
-                                <?php endwhile; ?>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-            <!-- <div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold card-title">COMPLAINT FILED HISTORY AS COMPLAINANT</h6>
-				</div>
-				<div class="card-body">
-					<?php if ($complainant->num_rows > 0) : ?>
-						<div class="table-responsive">
-							<table class="table table-striped text-gray-900 border" width="100%">
-								<tr>
-									<th>Entry No.</th>
-									<th>Respondent</th>
-									<th>Case Filed</th>
-									<th>Status</th>
-									<th>Date Filed</th>
-								</tr>
-								<?php
-                                while ($rowc = $complainant->fetch_assoc()) {
-                                    $resp_id = $rowc['resp_id'];
-                                    $resp1 = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '$resp_id'")->fetch_assoc();
-                                    $rp_fullname = $resp1['res_fname'] . ' ' . $resp1['res_mname'] . ' ' . $resp1['res_lname'];
-                                ?>
-									<tr>
-										<td><?= $rowc['fc_id'] ?></td>
-										<td><?= $rp_fullname ?></td>
-										<td>
-											<?php
-                                            $com_id = $rowc['com_id'];
-                                            $complaint = $connection->query("SELECT * FROM tbl_complaint_type WHERE com_id = '$com_id'")->fetch_assoc();
-                                            echo $complaint['com_name'];
-                                            ?>
-										</td>
-										<td>
-											<?php
-                                            $status_id = $rowc['status_id'];
-                                            $status = $connection->query("SELECT * FROM tbl_status WHERE status_id = '$status_id'")->fetch_assoc();
-                                            if (!empty($status['status_name'])) {
-                                                echo $status['status_name'];
-                                            } else {
-                                                echo "---";
-                                            }
-                                            ?>
-										</td>
-										<td><?= date('F d, Y', strtotime($rowc['fc_regdatetime'])) ?></td>
-									</tr>
-									<?php
-                                }
-                                    ?>
-							</table>
-						</div>
-					<?php else : ?>
-						<h6 class="text-center font-italic text-gray-500">No data available</h6>
-					<?php endif; ?>
-				</div>
-			</div> -->
-        </div>
+        <?php endif; ?>
     </div>
-</div>
+</section>
 <noscript id="print-header">
     <div class="justify-content-center">
         <table class="w-100 mb-5">
@@ -287,12 +240,13 @@ if ($schedules->num_rows == 3) {
             var _ph = $($('noscript#print-header').html()).clone()
             var _el = $('<div>')
             _p.find('.card').removeClass('shadow card')
+            _p.find('.card-title').removeClass('card-title')
             _p.find('.card-header').removeClass('card-header')
             _p.find('.card-body').removeClass('card-body')
-            _p.find('h6.card-title').addClass('text-center h5')
+            _p.find('h6.title').addClass('text-center h5')
             _el.append(_h)
             _el.append(_ph)
-            _el.find('title').text('Resident Profile')
+            _el.find('title').text('Complaint Information')
             _el.append(_p)
 
             var nw = window.open('', '_blank', 'width=1000,height=900,top=50,left=200')
@@ -303,17 +257,17 @@ if ($schedules->num_rows == 3) {
                 nw.print()
                 setTimeout(() => {
                     nw.close()
-                    // end_loader()
+                    end_loader()
                     // $('.table').dataTable({
                     // 	columnDefs: [
                     // 	{ orderable: false, targets: 5 }
                     // 	],
                     // });
-                }, 300);
+                }, 250);
             }, (750));
         });
     });
-   
+
     // toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
 </script>
 <?php

@@ -16,6 +16,8 @@ if ($check->num_rows > 0) {
 		$log = $connection->query("INSERT INTO tbl_logs (user_id, log_action) VALUES ('$user_id', '$action')");
 		$message = "<b>" . $name . "</b> added successfully.";
 		$flag = 1;
+
+		$com = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY com_id DESC LIMIT 1")->fetch_assoc();
 	} else {
 		$message = "Something went wrong. Please try again later.";
 		$flag = 0;
@@ -24,4 +26,8 @@ if ($check->num_rows > 0) {
 
 $response['message'] = $message;
 $response['success_flag'] = $flag;
+if ($com != '') {
+	$response['com_id'] = $com['com_id'];
+	$response['com_name'] = $com['com_name'];
+}
 exit(json_encode($response));

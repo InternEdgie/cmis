@@ -1,9 +1,9 @@
-<div class="modal fade" id="addNonResidentModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal" id="addNonResidentModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<form id="insertNonResident" method="POST">
 				<div class="modal-header">
-					<h4 class="modal-title font-weight-bold"><i class="bi bi-person-plus-fill mr-2 text-success"></i>ADD NON-RESIDENT</h4>
+					<h4 class="modal-title font-weight-bold">Add Non-Resident</h4>
 					<button type="button" class="close align-self-center" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">

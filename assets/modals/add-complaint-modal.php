@@ -1,8 +1,8 @@
-<div class="modal fade" id="fileComplaintModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal" id="fileComplaintModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <form method="post" id="insertFileComplaint">
-                <div class="modal-header" style="border-top: 5px solid red">
+                <div class="modal-header">
                     <h5 class="modal-title"><i class="fas fa-file-alt mr-2"></i>FILE COMPLAINT <span class="border-left pl-3 ml-2 border-dark"><?= $fc_id ?></span></h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
@@ -13,36 +13,42 @@
                             <div class="step active" data-target="#respondent-part">
                                 <button type="button" class="step-trigger" role="tab" aria-controls="respondent-part" id="respondent-part-trigger" aria-selected="true">
                                     <span class="bs-stepper-circle">1</span>
-                                    <span class="bs-stepper-label">Respondent</span>
+                                    <span class="bs-stepper-label" id="respondent_label">Respondent</span>
                                 </button>
                             </div>
                             <div class="line"></div>
                             <div class="step" data-target="#complainant-part">
                                 <button type="button" class="step-trigger" role="tab" aria-controls="complainant-part" id="complainant-part-trigger" aria-selected="false" disabled>
                                     <span class="bs-stepper-circle">2</span>
-                                    <span class="bs-stepper-label">Complainant</span>
+                                    <span class="bs-stepper-label d-none" id="complainant_label">Complainant</span>
                                 </button>
                             </div>
                             <div class="line"></div>
                             <div class="step" data-target="#other-part">
                                 <button type="button" class="step-trigger" role="tab" aria-controls="other-part" id="other-part-trigger" aria-selected="false" disabled>
                                     <span class="bs-stepper-circle">3</span>
-                                    <span class="bs-stepper-label">Other Details</span>
+                                    <span class="bs-stepper-label d-none" id="other_details_label">Other Details</span>
                                 </button>
                             </div>
                         </div>
                         <div class="bs-stepper-content mt-3">
-                            <div id="respondent-part" class="content active" role="tabpanel" aria-labelledby="respondent-part-trigger">
-                                <select name="resp_id" id="resp_id" class="form-control resp_id" required>
-                                    <option value="" selected disabled></option>
-                                    <option value="0">&oplus; Add Resident</option>
-                                    <?php if ($respondents->num_rows > 0) : ?>
-                                        <?php while ($row = $respondents->fetch_assoc()) : ?>
-                                            <option value="<?= $row['res_id'] ?>"><?= $row['res_lname'] . ', ' . $row['res_fname'] ?></option>
-                                        <?php endwhile; ?>
-                                    <?php endif; ?>
-                                </select>
-                                <div class="border-top mt-3 pt-3 d-none" id="add-resident-respondent">
+                            <div id="bs-stepper-content">
+                                <div id="respondent-part" class="content active" role="tabpanel" aria-labelledby="respondent-part-trigger">
+                                    <div class="input-group mb-3">
+                                        <select name="resp_id" id="resp_id" class="form-control resp_id" required>
+                                            <option value="" selected disabled></option>
+                                            <?php if ($respondents->num_rows > 0) : ?>
+                                                <?php while ($row = $respondents->fetch_assoc()) : ?>
+                                                    <option value="<?= $row['res_id'] ?>"><?= $row['res_lname'] . ', ' . $row['res_fname'] ?></option>
+                                                <?php endwhile; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-success add-resident-respondent" title="Add Resident"><i class="bi bi-person-plus"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="border-top mt-3 pt-3 d-none" id="add-resident-respondent">
                                     <div class="text-center h4 mb-3">Resident Information (Respondent)</div>
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -118,26 +124,31 @@
                                         <label for="res_contact">Contact Number: <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" data-inputmask='"mask": "9999-999-9999"' placeholder="Contact Number" id="res_contact" name="res_contact" data-mask disabled>
                                     </div>
+                                </div> -->
                                 </div>
-                            </div>
-                            <div id="complainant-part" class="content" role="tabpanel" aria-labelledby="complainant-part-trigger">
-                                <select name="fc_type" id="fc_type" class="form-control fc_type" required>
-                                    <option value="" selected disabled>Complainant Type</option>
-                                    <option value="0">Resident</option>
-                                    <option value="1">Non-Resident</option>
-                                </select>
-                                
-                                <div class="mt-3 d-none" id="select-res-complainant">
-                                    <select name="res_comp_id" id="res_comp_id" class="form-control res_comp_id" disabled>
-                                        <option value="" selected disabled></option>
-                                        <option value="0">&oplus; Add Resident</option>
-                                        <?php if ($res_complainants->num_rows > 0) : ?>
-                                            <?php while ($row = $res_complainants->fetch_assoc()) : ?>
-                                                <option value="<?= $row['res_id'] ?>"><?= $row['res_lname'] . ', ' . $row['res_fname'] ?></option>
-                                            <?php endwhile; ?>
-                                        <?php endif; ?>
+                                <div id="complainant-part" class="content" role="tabpanel" aria-labelledby="complainant-part-trigger">
+                                    <select name="fc_type" id="fc_type" class="form-control fc_type" required>
+                                        <option value="" selected disabled>Complainant Type</option>
+                                        <option value="0">Resident</option>
+                                        <option value="1">Non-Resident</option>
                                     </select>
-                                    <div class="border-top mt-3 pt-3 d-none" id="add-resident-complainant">
+
+                                    <div class="mt-3 d-none" id="select-res-complainant">
+                                        <div class="input-group mb-3">
+                                            <select name="res_comp_id" id="res_comp_id" class="form-control res_comp_id" disabled>
+                                                <option value="" selected disabled></option>
+                                                <!-- <option value="0">&oplus; Add Resident</option> -->
+                                                <?php if ($res_complainants->num_rows > 0) : ?>
+                                                    <?php while ($row = $res_complainants->fetch_assoc()) : ?>
+                                                        <option value="<?= $row['res_id'] ?>"><?= $row['res_lname'] . ', ' . $row['res_fname'] ?></option>
+                                                    <?php endwhile; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-success add-resident-complainant" title="Add Resident"><i class="bi bi-person-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="border-top mt-3 pt-3 d-none" id="add-resident-complainant">
                                         <div class="text-center h4 mb-3">Resident Information (Complainant)</div>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -213,19 +224,25 @@
                                             <label for="res_contact">Contact Number: <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" data-inputmask='"mask": "9999-999-9999"' placeholder="Contact Number" id="comp_res_contact" name="comp_res_contact" data-mask disabled>
                                         </div>
+                                    </div> -->
                                     </div>
-                                </div>
-                                <div class="mt-3 d-none" id="select-nres-complainant">
-                                    <select name="nres_comp_id" id="nres_comp_id" class="form-control nres_comp_id" disabled>
-                                        <option value="" selected disabled></option>
-                                        <option value="0">&oplus; Add Non-Resident</option>
-                                        <?php if ($nres_complainants->num_rows > 0) : ?>
-                                            <?php while ($row = $nres_complainants->fetch_assoc()) : ?>
-                                                <option value="<?= $row['nres_id'] ?>"><?= $row['nres_lname'] . ', ' . $row['nres_fname'] ?></option>
-                                            <?php endwhile; ?>
-                                        <?php endif; ?>
-                                    </select>
-                                    <div class="border-top mt-3 pt-3 d-none" id="add-non-resident-complainant">
+                                    <div class="mt-3 d-none" id="select-nres-complainant">
+
+                                        <div class="input-group mb-3">
+                                            <select name="nres_comp_id" id="nres_comp_id" class="form-control nres_comp_id" disabled>
+                                                <option value="" selected disabled></option>
+                                                <!-- <option value="0">&oplus; Add Non-Resident</option> -->
+                                                <?php if ($nres_complainants->num_rows > 0) : ?>
+                                                    <?php while ($row = $nres_complainants->fetch_assoc()) : ?>
+                                                        <option value="<?= $row['nres_id'] ?>"><?= $row['nres_lname'] . ', ' . $row['nres_fname'] ?></option>
+                                                    <?php endwhile; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-success add-non-resident" title="Add Non-Resident"><i class="bi bi-person-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="border-top mt-3 pt-3 d-none" id="add-non-resident-complainant">
                                         <div class="text-center h4 mb-3">Non-Resident Information (Complainant)</div>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -290,7 +307,7 @@
                                                     <label for="nres_citizenship_id">Citizenship: <span class="text-danger">*</span></label>
                                                     <select class="form-control select2 form-select" id="nres_citizenship_id" name="nres_citizenship_id" disabled>
                                                         <option value="" disabled selected>Citizenship</option>
-                                                        <?php while ($cdata = $citizenship->fetch_assoc()): ?>
+                                                        <?php while ($cdata = $citizenship->fetch_assoc()) : ?>
                                                             <option value="<?= $cdata['citizenship_id'] ?>"><?= $cdata['citizenship_name'] ?></option>
                                                         <?php endwhile; ?>
                                                     </select>
@@ -335,38 +352,44 @@
                                             <label for="nres_contact">Contact Number: <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" data-inputmask='"mask": "9999-999-9999"' placeholder="Contact Number" id="nres_contact" name="nres_contact" data-mask disabled>
                                         </div>
+                                    </div> -->
+                                    </div>
+                                </div>
+                                <div id="other-part" class="content" role="tabpanel" aria-labelledby="other-part-trigger">
+                                    <div class="input-group mb-3">
+                                        <select name="com_id" id="com_id" class="form-control com_id" required>
+                                            <option value="" selected disabled></option>
+                                            <!-- <option value="0">&oplus; Add Complaint Type</option> -->
+                                            <?php if ($complaint_type->num_rows > 0) : ?>
+                                                <?php while ($row = $complaint_type->fetch_assoc()) : ?>
+                                                    <option value="<?= $row['com_id'] ?>"><?= $row['com_name'] ?></option>
+                                                <?php endwhile; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-success add-complaint-type" title="Add Complaint Type"><i class="bi bi-plus-circle"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <textarea name="fc_statement" id="fc_statement" rows="3" class="form-control" placeholder="Reason for Complaint" required></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div id="other-part" class="content" role="tabpanel" aria-labelledby="other-part-trigger">
-                                <select name="com_id" id="com_id" class="form-control com_id" required>
-                                    <option value="" selected disabled></option>
-                                    <option value="0">&oplus; Add Complaint Type</option>
-                                    <?php if ($complaint_type->num_rows > 0) : ?>
-                                        <?php while ($row = $complaint_type->fetch_assoc()) : ?>
-                                            <option value="<?= $row['com_id'] ?>"><?= $row['com_name'] ?></option>
-                                        <?php endwhile; ?>
-                                    <?php endif; ?>
-                                </select>
-                                <div class="form-group mt-3">
-                                    <textarea name="fc_statement" id="fc_statement" rows="3" class="form-control" placeholder="Reason for Complaint" required></textarea>
-                                </div>
-                                
-                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div id="first_step">
-                        <button class="btn btn-primary" id="first_next" onclick="stepper.next()" disabled>Next</button>
+                        <button class="btn btn-danger" id="first_next" onclick="stepper.next()" disabled>Next</button>
                     </div>
                     <div id="second_step" class="d-none">
-                        <button class="btn btn-primary prev" id="first_prev" onclick="stepper.previous()" disabled>Previous</button>
-                        <button class="btn btn-primary next" id="second_next" onclick="stepper.next()" disabled>Next</button>
+                        <button class="btn prev" id="first_prev" onclick="stepper.previous()" disabled>Previous</button>
+                        <button class="btn btn-danger next" id="second_next" onclick="stepper.next()" disabled>Next</button>
                     </div>
                     <div id="third_step" class="d-none">
-                        <button class="btn btn-primary prev" id="second_prev" onclick="stepper.previous()" disabled>Previous</button>
-                        <button type="submit" class="btn btn-primary" id="submit" name="submit" disabled>Submit</button>
+                        <button class="btn prev" id="second_prev" onclick="stepper.previous()" disabled>Previous</button>
+                        <button type="submit" class="btn btn-danger" id="submit" name="submit" disabled>Submit</button>
                     </div>
                 </div>
             </form>

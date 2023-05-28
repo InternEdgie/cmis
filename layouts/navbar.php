@@ -1,14 +1,14 @@
-<!-- Topbar -->
-<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow">
-	<!-- Sidebar Toggle (Topbar) -->
-	<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-		<i class="fa fa-bars"></i>
-	</button>
-	<!-- Topbar Navbar -->
-	<ul class="navbar-nav ml-auto">
-		<div class="topbar-divider d-none d-sm-block"></div>
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+	<!-- Left navbar links -->
+	<ul class="navbar-nav">
+		<li class="nav-item">
+			<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+		</li>
+	</ul>
 
-		<!-- Nav Item - User Information -->
+	<!-- Right navbar links -->
+	<ul class="navbar-nav ml-auto">
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="mr-2 d-none d-lg-inline text-gray-900"><?= $_SESSION['auth_user']['first_name'] . ' ' . $_SESSION['auth_user']['last_name'] ?></span>
@@ -24,3 +24,4 @@
 		</li>
 	</ul>
 </nav>
+  <!-- /.navbar -->

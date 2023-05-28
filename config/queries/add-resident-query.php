@@ -36,6 +36,8 @@ if ($connection->query($query) === TRUE) {
 	}
 	$message = "<b>" . $first_name . ' ' . $middle_name . ' ' . $last_name . "</b> has been added to the resident record.";
 	$flag = 1;
+
+	$res = $connection->query('SELECT * FROM tbl_residents ORDER BY res_id DESC LIMIT 1')->fetch_assoc();
 } else {
 	$message = "Something went wrong. Please try again later.";
     $flag = 0;
@@ -43,6 +45,12 @@ if ($connection->query($query) === TRUE) {
 
 $response['message'] = $message;
 $response['success_flag'] = $flag;
+if ($res != '') {
+	$response['res_id'] = $res['res_id'];
+	$response['res_lname'] = $res['res_lname'];
+	$response['res_fname'] = $res['res_fname'];
+}
+
 exit(json_encode($response));
 
 

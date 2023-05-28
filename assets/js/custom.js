@@ -53,32 +53,33 @@ $(document).ready(function() {
 
     $('.resp_id').select2({
         theme: 'bootstrap4',
-        width: '100%',
         placeholder: 'Select Respondent',
+        dropdownParent: $('#fileComplaintModal')
     })
 
     $('.fc_type').select2({
         theme: 'bootstrap4',
         width: '100%',
         placeholder: 'Type of Complainant',
+        dropdownParent: $('#fileComplaintModal')
     })
 
     $('.res_comp_id').select2({
         theme: 'bootstrap4',
-        width: '100%',
         placeholder: 'Select Complainant (Resident)',
+        dropdownParent: $('#fileComplaintModal')
     })
 
     $('.nres_comp_id').select2({
         theme: 'bootstrap4',
-        width: '100%',
         placeholder: 'Select Complainant (Non-Resident)',
+        dropdownParent: $('#fileComplaintModal')
     })
 
     $('.com_id').select2({
         theme: 'bootstrap4',
-        width: '100%',
         placeholder: 'Nature of The Case (Complaint Type)',
+        dropdownParent: $('#fileComplaintModal')
     })
 
     $('[data-mask]').inputmask();

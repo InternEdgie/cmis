@@ -1,9 +1,18 @@
-/*body {
+/* body {
   color: black !important;
-}*/
-
-.modal {
   overflow-y: scroll !important;
+} */
+.modal-body {
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  max-height: 420px;
+  overflow-y: auto;
 }
 .form-select {
   display: block;
@@ -50,9 +59,9 @@
   text-shadow: 0 0 0 #212529;
 }
 
-#content {
+/*#content {
   margin-top: 1rem;
-}
+}*/
 
 
 /*body {
@@ -210,3 +219,22 @@ option {
 option:hover {
   background-color: blue !important;
 }
+
+/*.form-select option:hover {
+  background-color: blue !important;
+}
+
+.form-select option:checked {
+  background-color: blue !important;
+  color: white !important;
+}
+
+.form-select option:selected {
+  background-color: blue !important;
+  color: white !important;
+}*/
+
+/*.select2-container--default .select2-results__option[aria-disabled="true"] {
+  color: gray !important;
+  background-color: black !important;
+}*/
