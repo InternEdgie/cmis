@@ -22,8 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         // nextDayThreshold: '09:00:00',
     	headerToolbar: {
-    		left: 'prev,next today',
-    		right: 'dayGridMonth,dayGridWeek,listMonth',
+    		left: 'today',
+    		//right: 'dayGridMonth,dayGridWeek,listMonth',
+            right: 'prev,next',
     		center: 'title',
     	},
     	buttonText: {
@@ -47,19 +48,45 @@ document.addEventListener('DOMContentLoaded', function() {
     	selectable: true,
     	fixedWeekCount: false,
         showNonCurrentDates: false,
-        
         events: events,
         eventClick: function(info) {
         	var _details = $('#event-details-modal')
         	var id = info.event.id
-            console.log(id);
-        	if (!!scheds[id]) {
+            _details.find('.dropdown #settled').removeClass('active')
+            _details.find('.dropdown #not_settled').removeClass('active')
+            _details.find('#remarks').removeClass('btn-warning')
+            _details.find('#remarks').removeClass('btn-success')
+            if (!!scheds[id]) {
+                console.log(scheds);
                 _details.find('#schedule_id').val(id)
                 _details.find('#fc_id').text(scheds[id].fc_id)
+                _details.find('#complainant_name').text(scheds[id].complainant_name)
+                _details.find('#respondent_name').text(scheds[id].respondent_name)
                 _details.find('#description').text(scheds[id].event_name)
                 _details.find('#start').text(scheds[id].sdate)
                 _details.find('#paraID').text(scheds[id].fc_id)
                 _details.find('#edit,#reschedule').attr('data-id', id)
+                $.ajax({
+                    method: 'POST',
+                    url: 'config/queries/update-schedule-remarks-query.php',
+                    data: {
+                        fc_id: scheds[id].fc_id,
+                        fetch_remark: "fetch_remark"},
+                    success: function(data) {
+                        var response = JSON.parse(data)
+                        var remarks_text
+                        if (response.remarks == 0) {
+                            remarks_text = "Not Settled"
+                            _details.find('.dropdown #not_settled').addClass('active')
+                            _details.find('#remarks').addClass('btn-warning')
+                        } else {
+                            remarks_text = "Settled"
+                            _details.find('.dropdown #settled').addClass('active')
+                            _details.find('#remarks').addClass('btn-success')
+                        }
+                        _details.find('#remarks').text(remarks_text)
+                            }
+                        })
                 _details.modal('show')
         	} else {
         		alert("Event is undefined");
@@ -69,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
         eventDrop: function(info) {
         	var id = info.event.id
             var start_date = info.event.start;
+            alert(moment().format('YYYY-MM-DD') + ' - ' + moment(start_date).format('YYYY-MM-DD'))
         	if (!!scheds[id]) {
                 var fc_id = scheds[id].fc_id;
                 var event_id = scheds[id].event_id;
@@ -92,10 +120,14 @@ document.addEventListener('DOMContentLoaded', function() {
         	}
         },
         select: function(info) {
-        	var _form = $('#addScheduleModal') 
-        	console.log(String(info.startStr), String(info.endStr).replace(" ", "\\t"))
-        	_form.find('[name="start"]').val(info.startStr)
-        	_form.modal('show')
+        	var _form = $('#addScheduleModal')
+            if (moment().format('YYYY-MM-DD') > moment(info.startStr).format('YYYY-MM-DD')) {
+                toastr.error("You can't select this date anymore. Please try another.")
+            } else {
+                _form.find('[name="start"]').val(info.startStr)
+        	    _form.modal('show')
+            }
+        	
         },
     });
     calendar.render();
@@ -109,9 +141,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Edit Button
     $('#edit').click(function() {
     	var id = $(this).attr('data-id')
+        console.log(scheds[id])
     	if (!!scheds[id]) {
     		var _form = $('#updateScheduleModal')
-    		console.log(String(scheds[id].start_date).replace(" ", "\\t"))
+    		// console.log(String(scheds[id].start_date).replace(" ", "\\t"))
     		// _form.find('[name="id"]').val(id)
             _form.find('[name="event_id"]').val(scheds[id].event_id)
     		_form.find('[name="title"]').val(scheds[id].fc_id)

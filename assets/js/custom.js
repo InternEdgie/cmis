@@ -82,5 +82,19 @@ $(document).ready(function() {
         dropdownParent: $('#fileComplaintModal')
     })
 
+    $('.for_schedule').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Select from Filed Complaints',
+        dropdownParent: $('#addScheduleModal')
+    })
+
+    $('.event').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Select Event',
+        dropdownParent: $('#addScheduleModal')
+    })
+
     $('[data-mask]').inputmask();
 });

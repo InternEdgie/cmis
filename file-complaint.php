@@ -37,7 +37,11 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 	$fc_id = sprintf('%03d', 1) . '-' . $current_year;
 }
 ?>
-
+<style>
+	.badge.status {
+		width: 100px
+	}
+</style>
 <!-- Content Header (Page header) -->
 <div class="content-header">
 	<div class="container-fluid">
@@ -128,14 +132,28 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 											if ($fc_status_id != 0) {
 												while ($statdata = $status_r->fetch_assoc()) {
 													if ($fc_status_id == $statdata['status_id']) {
-														echo $statdata['status_name'];
+														if ($fc_status_id == 1) {
+															echo "<div class='badge badge-pill badge-primary status'>" . $statdata['status_name'] . "</div>";
+														} else if ($fc_status_id == 2) {
+															echo "<div class='badge badge-pill badge-success status'>" . $statdata['status_name'] . "</div>";
+														} else if ($fc_status_id == 3) {
+															echo "<div class='badge badge-pill badge-success status'>" . $statdata['status_name'] . "</div>";
+														} else if ($fc_status_id == 4) {
+															echo "<div class='badge badge-pill badge-secondary status'>" . $statdata['status_name'] . "</div>";
+														} else if ($fc_status_id == 5) {
+															echo "<div class='badge badge-pill badge-info status'>" . $statdata['status_name'] . "</div>";
+														} else if ($fc_status_id == 4) {
+															echo "<div class='badge badge-pill badge-warning status'>" . $statdata['status_name'] . "</div>";
+														} else {
+															echo "<div class='badge badge-pill badge-secondary status'>" . $statdata['status_name'] . "</div>";
+														}
 													}
 												}
 											} else {
 												echo "---";
 											}
 										} else {
-											echo "<span class='text-muted'>Set Schedule</span>";
+											echo "<span class='badge badge-pill badge-secondary status'>Set Schedule</span>";
 										}
 										?>
 									</td>
