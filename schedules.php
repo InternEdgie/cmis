@@ -41,74 +41,88 @@ $remarks = $connection->query("SELECT * FROM tbl_remarks");
 		width: 100px !important;
 	}
 </style>
-<div id="content">
-	<div class="container-fluid">
-		<div class="d-sm-flex align-items-center justify-content-between mb-4">
-			<h1 class="h3 mb-0 text-gray-800">SCHEDULES</h1>
-		</div>
-		<div class="card shadow mb-4">
-			<div class="card-header py-3 bg-warning">
-				<h6 class="m-0 font-weight-bold text-dark">CALENDAR</h6>
-			</div>
-			<div class="card-body">
-				<?php include 'assets/modals/add-schedule-modal.php' ?>
-				<?php //include 'assets/modals/view-schedule-modal.php' 
-				?>
-				<?php //include 'assets/modals/update-schedule-modal.php' 
-				?>
-				<!-- Event Details Modal -->
-				<div class="modal fade" data-backdrop="static" id="event-details-modal">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Schedule Details</h5>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-							</div>
-							<div class="modal-body rounded-0">
-								<div class="container-fluid">
-									<input type="hidden" name="schedule_id" id="schedule_id" class="schedule_id" value="">
-									<dl>
-										<dt class="text-muted d-flex">ENTRY NO.
-											<div class="dropdown ml-auto">
-												<button class="btn btn-secondary btn-xs dropdown-toggle dropdown-pill" type="button" id="remarks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												</button>
-												<div class="dropdown-menu" aria-labelledby="remarks">
-													<button class="dropdown-item" type="button" id="settled" data="1">Settled</button>
-													<button class="dropdown-item" type="button" id="not_settled" data="0">Not Settled</button>
-												</div>
-											</div>
-										</dt>
-										<dd id="fc_id" class="fw-bold fs-4 file_complaint_id"></dd>
-										<dt class="text-muted">COMPLAINANT</dt>
-										<dd id="complainant_name" class="fw-bold"></dd>
-										<dt class="text-muted">RESPONDENT</dt>
-										<dd id="respondent_name" class="fw-bold"></dd>
-										<dt class="text-muted">WHAT</dt>
-										<dd id="description" class=""></dd>
-										<dt class="text-muted">WHEN</dt>
-										<dd id="start" class=""></dd>
-									</dl>
 
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-12">
+				<h1 class="m-0">Schedules</h1>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content pb-5">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3 bg-warning">
+						<h6 class="m-0 font-weight-bold text-dark">CALENDAR</h6>
+					</div>
+					<div class="card-body">
+						<?php include 'assets/modals/add-schedule-modal.php' ?>
+						<?php //include 'assets/modals/view-schedule-modal.php' 
+						?>
+						<?php //include 'assets/modals/update-schedule-modal.php' 
+						?>
+						<!-- Event Details Modal -->
+						<div class="modal fade" data-backdrop="static" id="event-details-modal">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Schedule Details</h5>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+									</div>
+									<div class="modal-body rounded-0">
+										<div class="container-fluid">
+											<input type="hidden" name="schedule_id" id="schedule_id" class="schedule_id" value="">
+											<dl>
+												<dt class="text-muted d-flex">ENTRY NO.
+													<div class="dropdown ml-auto">
+														<button class="btn btn-secondary btn-xs dropdown-toggle dropdown-pill" type="button" id="remarks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														</button>
+														<div class="dropdown-menu" aria-labelledby="remarks">
+															<button class="dropdown-item" type="button" id="settled" data="1">Settled</button>
+															<button class="dropdown-item" type="button" id="not_settled" data="0">Not Settled</button>
+														</div>
+													</div>
+												</dt>
+												<dd id="fc_id" class="fw-bold fs-4 file_complaint_id"></dd>
+												<dt class="text-muted">COMPLAINANT</dt>
+												<dd id="complainant_name" class="fw-bold"></dd>
+												<dt class="text-muted">RESPONDENT</dt>
+												<dd id="respondent_name" class="fw-bold"></dd>
+												<dt class="text-muted">WHAT</dt>
+												<dd id="description" class=""></dd>
+												<dt class="text-muted">WHEN</dt>
+												<dd id="start" class=""></dd>
+											</dl>
+
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default btn-sm rounded-0" data-dismiss="modal">Close</button>
+										<!-- <button type="button" class="btn btn-secondary btn-sm rounded-0" id="reschedule"><i class="bi bi-pencil-square me-1"></i>Reschedule</button> -->
+										<button type="button" class="btn btn-warning btn-sm rounded-0" id="edit"><i class="bi bi-pencil-square me-1"></i>Edit</button>
+									</div>
 								</div>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default btn-sm rounded-0" data-dismiss="modal">Close</button>
-								<!-- <button type="button" class="btn btn-secondary btn-sm rounded-0" id="reschedule"><i class="bi bi-pencil-square me-1"></i>Reschedule</button> -->
-								<button type="button" class="btn btn-warning btn-sm rounded-0" id="edit"><i class="bi bi-pencil-square me-1"></i>Edit</button>
+						</div>
+						<!-- Event Details Modal -->
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12" id="page-calendar">
+								<div id="calendar"></div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<!-- Event Details Modal -->
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12" id="page-calendar">
-						<div id="calendar"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
 <?php
 if (isset($connection)) $connection->close();
 ?>

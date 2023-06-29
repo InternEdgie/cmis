@@ -16,7 +16,8 @@ $barangay = $_POST['barangay'];
 $city = $_POST['city'];
 $province = $_POST['province'];
 $zip_code = $_POST['zcode'];
-$contact = str_replace('-', '', $_POST['contact']);
+// $contact = str_replace('-', '', $_POST['contact']);
+$contact = $_POST['contact'];
 
 $formatbd = str_replace('/', '-', $birthday);
 $newbd = date('d-m-Y', strtotime($formatbd));

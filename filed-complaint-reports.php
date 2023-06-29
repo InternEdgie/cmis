@@ -36,7 +36,7 @@ if (isset($_POST['com_id']) && isset($_POST['status']) && isset($_POST['range'])
 	$end = date('Y-m-d', strtotime(substr($range, 13, 10)));
 	$fc = $connection->query("SELECT * FROM tbl_file_complaint WHERE status_id = '$status_id'");
 } else if (isset($_POST['range']) && $_POST['range'] != "") {
-	$range = $_POST['date_range'];
+	$range = $_POST['range'];
 	$start = date('Y-m-d', strtotime(substr($range, 0, 10)));
 	$end = date('Y-m-d', strtotime(substr($range, 13, 10)));
 	$fc = $connection->query("SELECT * FROM tbl_file_complaint WHERE DATE_FORMAT(fc_regdatetime, '%Y-%m-%d') BETWEEN '$start' AND '$end'");
@@ -46,7 +46,7 @@ if (isset($_POST['com_id']) && isset($_POST['status']) && isset($_POST['range'])
 
 $nature = $connection->query("SELECT * FROM tbl_complaint_type");
 
-$com_type = $connection->query("SELECT * FROM tbl_complaint_type a, tbl_file_complaint b WHERE a.com_id = b.com_id");
+$com_type = $connection->query("SELECT * FROM tbl_complaint_type a, tbl_file_complaint b WHERE a.com_id = b.com_id GROUP BY a.com_name");
 $status = $connection->query("SELECT * FROM tbl_status a");
 ?>
 <style type="text/css">
@@ -79,147 +79,160 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 		font-size: 11px;
 	}
 </style>
-<div id="content">
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
 	<div class="container-fluid">
-		<div class="d-sm-flex align-items-center mb-4">
-			<button href="#" class="ml-auto btn btn-sm btn-primary btn-icon-split shadow-sm" id="print">
-				<span class="icon">
-					<i class="bi bi-printer"></i>
-				</span>
-				<span class="text">Print</span>
-			</button>
-		</div>
-		<?php include 'config/message.php'; ?>
-		<div id="printThis">
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold card-title">FILED COMPLAINT REPORTS</h6>
-				</div>
-				<div class="card-body">
-					<div class="mb-3 border-bottom pb-3 d-print-none">
-						<form method="POST" action="filed-complaint-reports.php">
-							<div class="row">
-								<div class="col-sm-1 align-self-center">
-									Sort by:
-								</div>
-								<div class="col-sm">
-									<select class="form-control select2" name="com_id" id="com_id">
-										<option value="" disabled selected>Nature of the Case</option>
-										<?php while ($row = $com_type->fetch_assoc()) : ?>
-											<option value="<?= $row['com_id'] ?>" <?= isset($com_id) && $row['com_id'] == $com_id ? 'selected' : '' ?>><?= $row['com_name'] ?></option>
-										<?php endwhile; ?>
-									</select>
-								</div>
-								<div class="col-sm">
-									<select class="form-control select2" name="status" id="status">
-										<option value="" disabled selected>Status</option>
-										<?php while ($row = $status->fetch_assoc()) : ?>
-											<option value="<?= $row['status_id'] ?>" <?= isset($status_id) && $row['status_id'] == $status_id ? 'selected' : '' ?>><?= $row['status_name'] ?></option>
-										<?php endwhile; ?>
-									</select>
-								</div>
-								<div class="col-sm align-self-center">
-									<input type="text" name="range" class="form-control" id="reportrange" style="cursor: pointer; background-color: white" placeholder="Date Range" value="<?= isset($_POST['range']) && $_POST['range'] != '' ? $_POST['range'] : '' ?>" readonly>
-								</div>
-								<div class="col-sm-1 align-self-center">
-									<button type="submit" class="btn btn-sm btn-primary" name="search"><i class="bi bi-search"></i></button>
-								</div>
-							</div>
-						</form>
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<!-- <h1 class="m-0">Residents</h1> -->
+			</div><!-- /.col -->
+			<div class="col-sm-6 align-self-center text-right">
+				<button href="#" class="ml-auto btn btn-sm btn-primary btn-icon-split shadow-sm" id="print">
+					<span class="icon">
+						<i class="bi bi-printer"></i>
+					</span>
+					<span class="text">Print</span>
+				</button>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
+</div>
+<section class="content pb-5">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold card-title">FILED COMPLAINT REPORTS</h6>
 					</div>
-					<div class="table-responsive">
-						<table class="table table-striped border-0" id="table_desc" width="100%">
-							<thead class="bg-gray-900 text-white border-0">
-								<tr>
-									<th style="width: 10%">Entry No.</th>
-									<th style="width: 10%">Date</th>
-									<th style="width: 10%">Time</th>
-									<th style="width: 20%">Complainant</th>
-									<th style="width: 20%">Respondent</th>
-									<th style="width: 20%">Nature of Case</th>
-									<th style="width: 10%">Status</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php while ($row = $fc->fetch_assoc()) : ?>
+					<div class="card-body">
+						<div class="mb-3 border-bottom pb-3 d-print-none">
+							<form method="POST" action="filed-complaint-reports.php">
+								<div class="row">
+									<div class="col-sm-1 align-self-center">
+										Sort by:
+									</div>
+									<div class="col-sm">
+										<select class="form-control select2" name="com_id" id="com_id">
+											<option value="" disabled selected>Nature of the Case</option>
+											<?php while ($row = $com_type->fetch_assoc()) : ?>
+												<option value="<?= $row['com_id'] ?>" <?= isset($com_id) && $row['com_id'] == $com_id ? 'selected' : '' ?>><?= $row['com_name'] ?></option>
+											<?php endwhile; ?>
+										</select>
+									</div>
+									<div class="col-sm">
+										<select class="form-control select2" name="status" id="status">
+											<option value="" disabled selected>Status</option>
+											<?php while ($row = $status->fetch_assoc()) : ?>
+												<option value="<?= $row['status_id'] ?>" <?= isset($status_id) && $row['status_id'] == $status_id ? 'selected' : '' ?>><?= $row['status_name'] ?></option>
+											<?php endwhile; ?>
+										</select>
+									</div>
+									<div class="col-sm align-self-center">
+										<input type="text" name="range" class="form-control" id="reportrange" style="cursor: pointer; background-color: white" placeholder="Date Range" value="<?= isset($_POST['range']) && $_POST['range'] != '' ? $_POST['range'] : '' ?>" readonly>
+									</div>
+									<div class="col-sm-1 align-self-center">
+										<button type="submit" class="btn btn-sm btn-primary" name="search"><i class="bi bi-search"></i></button>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="table-responsive">
+							<table class="table table-striped table-hover" id="table_desc" width="100%">
+								<thead>
 									<tr>
-										<th><?= $row['fc_id']; ?></th>
-										<td><?= date('M. d, Y', strtotime($row['fc_regdatetime'])) ?></td>
-										<td><?= date('h:i A', strtotime($row['fc_regdatetime'])) ?></td>
-										<td>
-											<?php
-											$comp_id = $row['comp_id'];
-											if ($row['fc_type'] == 0) {
-												$c_res = $connection->query("SELECT * FROM tbl_residents tr, tbl_zone tz WHERE tr.res_id = '$comp_id' AND tz.zone_id = tr.zone_id")->fetch_assoc();
-												$comp_fullname = '<strong>' . $c_res['res_fname'] . ' ' . $c_res['res_mname'] . ' ' . $c_res['res_lname'] . '</strong>';
-												$comp_address = $c_res['zone_name'] . ', Macabalan<br>Cagayan de Oro City<br>Misamis Oriental 9000';
-											} else if ($row['fc_type'] == 1) {
-												$c_nres = $connection->query("SELECT * FROM tbl_non_residents WHERE nres_id = '$comp_id'")->fetch_assoc();
-												$comp_fullname = '<strong>' . $c_nres['nres_fname'] . ' ' . $c_nres['nres_mname'] . ' ' . $c_nres['nres_lname'] . '</strong>';
-												$comp_address =  $c_nres['nres_zone'] . ', ' .  $c_nres['nres_barangay'] . '<br>' . $c_nres['nres_city'] . '<br>' . $c_nres['nres_province'] . ', ' .  $c_nres['nres_zcode'];
-											}
-											echo $comp_fullname . '<br>' . $comp_address;
-											?>
-										</td>
-										<td>
-											<?php
-											$resp_id = $row['resp_id'];
-											$residents = $connection->query("SELECT * FROM tbl_residents tr, tbl_zone tz WHERE tr.res_id = '$resp_id' AND tz.zone_id = tr.zone_id")->fetch_assoc();
-											$resp_fullname = '<strong>' . $residents['res_fname'] . ' ' . $residents['res_mname'] . ' ' . $residents['res_lname'] . '</strong>';
-											$resp_address = $residents['zone_name'] . ', Macabalan<br>Cagayan de Oro City<br>Misamis Oriental 9000';
-											echo $resp_fullname . '<br>' . $resp_address;
-											?>
-										</td>
-										<td class="text-truncate">
-											<?php
-											$com = $row['com_id'];
-											$c_query = "SELECT * FROM tbl_complaint_type WHERE com_id = '$com'";
-											$c = $connection->query($c_query)->fetch_assoc();
-											echo $com_type = $c['com_name'];
-											// if (strlen($com_type) >= 15) {
-											// 	echo substr($com_type, 0, 15,) . '...';
-											// } else {
-											// 	echo $com_type;
-											// }
-
-											?>
-										</td>
-										<td>
-											<?php
-											$s_fc_id = $row['fc_id'];
-											$schedule = "SELECT * FROM tbl_schedules WHERE fc_id = '$s_fc_id'";
-											$check_sched = $connection->query($schedule);
-
-											if ($check_sched->num_rows > 0) {
-												$status_id = $row['status_id'];
-												$status = $connection->query("SELECT * FROM tbl_status WHERE status_id = '$status_id'")->fetch_assoc();
-												echo $status['status_name'];
-											} else {
-												echo "<span class='text-muted'>No Schedule</span>";
-											}
-											?>
-										</td>
+										<th style="width: 10%">Entry No.</th>
+										<th style="width: 10%">Date</th>
+										<th style="width: 10%">Time</th>
+										<th style="width: 20%">Complainant</th>
+										<th style="width: 20%">Respondent</th>
+										<th style="width: 20%">Nature of Case</th>
+										<th style="width: 10%">Status</th>
 									</tr>
-								<?php endwhile; ?>
-							</tbody>
-							<tfoot class="bg-gray-900 text-white">
-								<tr>
-									<th>Entry No.</th>
-									<th>Complainant</th>
-									<th>Respondent</th>
-									<th>Nature of Case</th>
-									<th>Date</th>
-									<th>Time</th>
-									<th>Status</th>
-								</tr>
-							</tfoot>
-						</table>
+								</thead>
+								<tbody>
+									<?php while ($row = $fc->fetch_assoc()) : ?>
+										<tr>
+											<th><?= $row['fc_id']; ?></th>
+											<td><?= date('M. d, Y', strtotime($row['fc_regdatetime'])) ?></td>
+											<td><?= date('h:i A', strtotime($row['fc_regdatetime'])) ?></td>
+											<td>
+												<?php
+												$comp_id = $row['comp_id'];
+												if ($row['fc_type'] == 0) {
+													$c_res = $connection->query("SELECT * FROM tbl_residents tr, tbl_zone tz WHERE tr.res_id = '$comp_id' AND tz.zone_id = tr.zone_id")->fetch_assoc();
+													$comp_fullname = '<strong>' . $c_res['res_fname'] . ' ' . $c_res['res_mname'] . ' ' . $c_res['res_lname'] . '</strong>';
+													$comp_address = $c_res['zone_name'] . ', Macabalan<br>Cagayan de Oro City<br>Misamis Oriental 9000';
+												} else if ($row['fc_type'] == 1) {
+													$c_nres = $connection->query("SELECT * FROM tbl_non_residents WHERE nres_id = '$comp_id'")->fetch_assoc();
+													$comp_fullname = '<strong>' . $c_nres['nres_fname'] . ' ' . $c_nres['nres_mname'] . ' ' . $c_nres['nres_lname'] . '</strong>';
+													$comp_address =  $c_nres['nres_zone'] . ', ' .  $c_nres['nres_barangay'] . '<br>' . $c_nres['nres_city'] . '<br>' . $c_nres['nres_province'] . ', ' .  $c_nres['nres_zcode'];
+												}
+												echo $comp_fullname . '<br>' . $comp_address;
+												?>
+											</td>
+											<td>
+												<?php
+												$resp_id = $row['resp_id'];
+												$residents = $connection->query("SELECT * FROM tbl_residents tr, tbl_zone tz WHERE tr.res_id = '$resp_id' AND tz.zone_id = tr.zone_id")->fetch_assoc();
+												$resp_fullname = '<strong>' . $residents['res_fname'] . ' ' . $residents['res_mname'] . ' ' . $residents['res_lname'] . '</strong>';
+												$resp_address = $residents['zone_name'] . ', Macabalan<br>Cagayan de Oro City<br>Misamis Oriental 9000';
+												echo $resp_fullname . '<br>' . $resp_address;
+												?>
+											</td>
+											<td class="text-truncate">
+												<?php
+												$com = $row['com_id'];
+												$c_query = "SELECT * FROM tbl_complaint_type WHERE com_id = '$com'";
+												$c = $connection->query($c_query)->fetch_assoc();
+												echo $com_type = $c['com_name'];
+												// if (strlen($com_type) >= 15) {
+												// 	echo substr($com_type, 0, 15,) . '...';
+												// } else {
+												// 	echo $com_type;
+												// }
+
+												?>
+											</td>
+											<td>
+												<?php
+												$s_fc_id = $row['fc_id'];
+												$schedule = "SELECT * FROM tbl_schedules WHERE fc_id = '$s_fc_id'";
+												$check_sched = $connection->query($schedule);
+
+												if ($check_sched->num_rows > 0) {
+													$status_id = $row['status_id'];
+													$status = $connection->query("SELECT * FROM tbl_status WHERE status_id = '$status_id'")->fetch_assoc();
+													echo $status['status_name'];
+												} else {
+													echo "<span class='text-muted'>No Schedule</span>";
+												}
+												?>
+											</td>
+										</tr>
+									<?php endwhile; ?>
+								</tbody>
+								<tfoot class="bg-gray-900 text-white">
+									<tr>
+										<th>Entry No.</th>
+										<th>Complainant</th>
+										<th>Respondent</th>
+										<th>Nature of Case</th>
+										<th>Date</th>
+										<th>Time</th>
+										<th>Status</th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
 <noscript id="print-header">
 	<div class="justify-content-center">
 		<table class="w-100 mb-5">
@@ -274,6 +287,7 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 			_p.find('.card-header').removeClass('card-header')
 			_p.find('.card-body').removeClass('card-body')
 			_p.find('h6.card-title').addClass('text-center h5')
+			_p.find('h6.card-title').removeClass('card-title')
 			_p.find('.dataTables_filter').addClass('d-none')
 			_p.find('.dataTables_length').addClass('d-none')
 			_p.find('.dataTables_info').addClass('d-none')

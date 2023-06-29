@@ -48,7 +48,7 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label for="gender">Gender: <span class="text-danger">*</span></label>
-								<select class="form-control" id="gender" name="gender" required>
+								<select class="form-control form-select" id="gender" name="gender" required>
 									<?php
 									$gender = $row['res_gender'];
 									?>
@@ -61,7 +61,7 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label for="civil_status">Civil Status: <span class="text-danger">*</span></label>
-								<select class="form-control" id="civil_status" name="civil_status" required>
+								<select class="form-control form-select" id="civil_status" name="civil_status" required>
 									<?php
 									$cstatus = $row['res_cstatus'];
 									?>
@@ -103,7 +103,7 @@
 					</div>
 					<div class="form-group">
 						<label for="contact">Contact Number: <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" data-inputmask='"mask": "9999-999-9999"' placeholder="Contact Number" value="<?= $row['res_contact'] ?>" id="contact" name="contact" data-mask>
+						<input type="text" class="form-control" id="contact" name="contact" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Contact Number" value="<?= $row['res_contact'] ?>" required>
 					</div>
 				</div>
 				<div class="modal-footer">

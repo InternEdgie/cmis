@@ -12,85 +12,97 @@ $zone_id = $row['zone_id'];
 $zone_data = $connection->query("SELECT * FROM tbl_zone WHERE zone_id = '$zone_id'")->fetch_assoc();
 ?>
 
-<div id="content">
+<div class="content-header">
 	<div class="container-fluid">
-		<div class="d-sm-flex align-items-center mb-4">
-			<div class="breadcrumb-item"><a href="lupon.php">List of Lupong Tagapamayapa</a></div>
-			<div class="breadcrumb-item active">Profile Viewing</div>
-			<button href="#" class="ml-auto btn btn-sm btn-primary btn-icon-split shadow-sm" id="print">
-				<span class="icon">
-					<i class="bi bi-printer"></i>
-				</span>
-				<span class="text">Print</span>
-			</button>
-			<a href="#" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm" data-toggle="modal" data-target="#editLuponModal">
-				<span class="icon">
-					<i class="bi bi-pencil-square"></i>
-				</span>
-				<span class="text">Edit</span>
-			</a>
-		</div>
-		<?php include 'config/message.php'; ?>
-		<div id="printThis">
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold card-title">LUPON INFORMATION</h6>
-				</div>
-				<div class="card-body">
-					<dl>
-						<div class="row mb-3">
-							<div class="col">
-								<dt>NAME</dt>
-								<dd id="fullname"><?= $row['res_fname'] . ' ' . $row['res_mname'] . ' ' . $row['res_lname'] . ' ' . $row['res_suffix']; ?></dd>
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="lupon.php">Lupong Tagapamayapa</a></li>
+					<li class="breadcrumb-item active">Profile Viewing</li>
+				</ol>
+			</div><!-- /.col -->
+			<div class="col-sm-6 align-self-center text-right">
+				<button href="#" class="ml-auto btn btn-sm btn-primary btn-icon-split shadow-sm" id="print">
+					<span class="icon">
+						<i class="bi bi-printer"></i>
+					</span>
+					<span class="text">Print</span>
+				</button>
+				<a href="#" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm" data-toggle="modal" data-target="#editLuponModal">
+					<span class="icon">
+						<i class="bi bi-pencil-square"></i>
+					</span>
+					<span class="text">Edit</span>
+				</a>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container-fluid -->
+</div>
+<section class="content pb-5" id="printThis">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold card-title">LUPON INFORMATION</h6>
+					</div>
+					<div class="card-body">
+						<dl>
+							<div class="row mb-3">
+								<div class="col">
+									<dt>NAME</dt>
+									<dd id="fullname"><?= $row['res_fname'] . ' ' . $row['res_mname'] . ' ' . $row['res_lname'] . ' ' . $row['res_suffix']; ?></dd>
+								</div>
+								<div class="col">
+									<dt>GENDER</dt>
+									<dd id="gender"><?= $row['res_gender'] ?></dd>
+								</div>
+								<div class="col">
+									<dt>CIVIL STATUS</dt>
+									<dd id="civil"><?= $row['res_cstatus'] ?></dd>
+								</div>
 							</div>
-							<div class="col">
-								<dt>GENDER</dt>
-								<dd id="gender"><?= $row['res_gender'] ?></dd>
+							<div class="row mb-3">
+								<div class="col">
+									<dt>BIRTHDAY</dt>
+									<dd id="birthday"><?= date('M. d, Y', strtotime($row['res_birthday'])) ?></dd>
+								</div>
+								<div class="col">
+									<dt>AGE</dt>
+									<dd id="age"><?= $row['res_age'] ?></dd>
+								</div>
+								<div class="col">
+									<dt>CONTACT NUMBER</dt>
+									<dd id="contact"><?= $row['res_contact'] ?></dd>
+								</div>
 							</div>
-							<div class="col">
-								<dt>CIVIL STATUS</dt>
-								<dd id="civil"><?= $row['res_cstatus'] ?></dd>
-							</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col">
-								<dt>BIRTHDAY</dt>
-								<dd id="birthday"><?= date('M. d, Y', strtotime($row['res_birthday'])) ?></dd>
-							</div>
-							<div class="col">
-								<dt>AGE</dt>
-								<dd id="age"><?= $row['res_age'] ?></dd>
-							</div>
-							<div class="col">
-								<dt>CONTACT NUMBER</dt>
-								<dd id="contact"><?= $row['res_contact'] ?></dd>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-4">
-								<dt>POSITION</dt>
-								<dd><?= $row['pos_name'] ?></dd>
-							</div>
-							<div class="col-sm-4">
-								<dt>STATUS</dt>
-								<dd><?= $row['status'] == 1 ? 'Active' : 'Inactive' ?></dd>
-							</div>
-							<div class="col-sm-4">
-								<dt>ADDRESS</dt>
-								<dd id="zone">
-									<?php
+							<div class="row">
+								<div class="col-sm-4">
+									<dt>POSITION</dt>
+									<dd><?= $row['pos_name'] ?></dd>
+								</div>
+								<div class="col-sm-4">
+									<dt>STATUS</dt>
+									<dd><?= $row['status'] == 1 ? 'Active' : 'Inactive' ?></dd>
+								</div>
+								<div class="col-sm-4">
+									<dt>ADDRESS</dt>
+									<dd id="zone">
+										<?php
 
-									echo $zone_data['zone_name'] . ', Macabalan, Cagayan de Oro City, Misamis Oriental';
-									?>
-								</dd>
+										echo $zone_data['zone_name'] . ', Macabalan, Cagayan de Oro City, Misamis Oriental';
+										?>
+									</dd>
+								</div>
 							</div>
-						</div>
-					</dl>
+						</dl>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
 <noscript id="print-header">
 	<div class="justify-content-center">
 		<table class="w-100 mb-5">
@@ -145,9 +157,10 @@ $zone_data = $connection->query("SELECT * FROM tbl_zone WHERE zone_id = '$zone_i
 			_p.find('.card-header').removeClass('card-header')
 			_p.find('.card-body').removeClass('card-body')
 			_p.find('h6.card-title').addClass('text-center h5')
+			_p.find('h6.card-title').removeClass('card-title')
 			_el.append(_h)
 			_el.append(_ph)
-			_el.find('title').text('Lupon Profile')
+			_el.find('title').text('Resident Profile')
 			_el.append(_p)
 
 			var nw = window.open('', '_blank', 'width=1000,height=900,top=50,left=200')
@@ -168,44 +181,44 @@ $zone_data = $connection->query("SELECT * FROM tbl_zone WHERE zone_id = '$zone_i
 			}, (750));
 		});
 		$('#updateLupon').on('submit', function(e) {
-            e.preventDefault();
-            var updateLupon = $('#updateLupon').serialize();
-            console.log(updateLupon)
-            swal.fire({
-                title: "Are you sure you want to update this record?",
-                icon: 'warning',
-                showCancelButton: !0,
-                confirmButtonText: "Yes, continue!",
-                confirmButtonColor: '#f6c23e',
-                cancelButtonText: "No, wait go back!",
-                reverseButtons: !0
-            }).then(function(e) {
-                if (e.value === true) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "config/queries/edit-lupon-query.php",
-                        data: updateLupon,
-                        success: function(data) {
-                            var response = JSON.parse(data);
-                            console.log(response);
-                            if (response.success_flag == 0) {
-                                toastr.error(response.message)
-                            } else {
-                                toastr.success(response.message);
+			e.preventDefault();
+			var updateLupon = $('#updateLupon').serialize();
+			console.log(updateLupon)
+			swal.fire({
+				title: "Are you sure you want to update this record?",
+				icon: 'warning',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#f6c23e',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/edit-lupon-query.php",
+						data: updateLupon,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
 
-                                setTimeout(function() {
-                                    window.location.reload();
-                                }, 2000);
-                            }
-                        }
-                    });
-                } else {
-                    e.dismiss;
-                }
-            }, function(dismiss) {
-                return false;
-            })
-        })
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
 	});
 	// toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
 </script>

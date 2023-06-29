@@ -47,7 +47,7 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label for="gender">Gender: <span class="text-danger">*</span></label>
-								<select class="form-control" id="gender" name="gender" required>
+								<select class="form-control form-select" id="gender" name="gender" required>
 									<option value="" disabled selected>Gender</option>
 									<option value="Male" <?= $row['nres_gender'] == 'Male' ? 'selected' : '' ?>>Male</option>
 									<option value="Female" <?= $row['nres_gender'] == 'Female' ? 'selected' : '' ?>>Female</option>
@@ -57,7 +57,7 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label for="civil_status">Civil Status: <span class="text-danger">*</span></label>
-								<select class="form-control" id="civil_status" name="civil_status" required>
+								<select class="form-control form-select" id="civil_status" name="civil_status" required>
 									<option value="" disabled selected>Civil Status</option>
 									<option value="Single" <?= $row['nres_cstatus'] == 'Single' ? 'selected' : '' ?>>Single</option>
 									<option value="Married" <?= $row['nres_cstatus'] == 'Married' ? 'selected' : '' ?>>Married</option>
@@ -70,7 +70,7 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label for="zone">Citizenship: <span class="text-danger">*</span></label>
-								<select class="form-control select2 form-select" id="citizenship_id" name="citizenship_id" required>
+								<select class="form-control form-select" id="citizenship_id" name="citizenship_id" required>
 									<option value="" disabled selected>Citizenship</option>
 									<?php while ($cdata2 = $citizenship->fetch_assoc()): ?>
 										<!-- <option value="<?= $cdata['citizenship_id'] ?>" <?= $cdata2['citizenship_id'] == $citizenship_id ? 'selected' : '' ?>><?= $cdata2['citizenship_name'] ?></option> -->
@@ -120,7 +120,8 @@
 					</div>
 					<div class="form-group">
 						<label for="contact">Contact Number: <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" data-inputmask='"mask": "9999-999-9999"' placeholder="Contact Number" id="contact" name="contact" value="<?= $row['nres_contact'] ?>" data-mask required>
+						<!-- <input type="text" class="form-control" data-inputmask='"mask": "9999-999-9999"' placeholder="Contact Number" id="contact" name="contact" value="<?= $row['nres_contact'] ?>" data-mask required> -->
+						<input type="text" class="form-control" id="contact" name="contact" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Contact Number" value="<?= $row['nres_contact'] ?>" required>
 					</div>
 				</div>
 				<div class="modal-footer">

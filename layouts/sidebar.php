@@ -113,7 +113,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/")+1)
 					</li>
 					<li class="nav-item <?= $page == 'positions.php' || $page == 'zone.php' || $page == 'citizenship.php' || $page == 'status.php' || $page == 'events.php' || $page == 'complaint-type.php' || $page == 'backup.php' ? 'menu-open':'' ?>">
 						<a href="#" class="nav-link py-3 <?= $page == 'positions.php' || $page == 'zone.php' || $page == 'citizenship.php' || $page == 'status.php' || $page == 'events.php' || $page == 'complaint-type.php' || $page == 'backup.php' ? 'active':'' ?>">
-							<i class="nav-icon fas fa-chart-pie"></i>
+							<i class="nav-icon fas fa-cog"></i>
 							<p>
 								Settings
 								<i class="right fas fa-angle-left mt-2"></i>
