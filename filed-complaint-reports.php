@@ -98,53 +98,61 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 		</div><!-- /.row -->
 	</div><!-- /.container-fluid -->
 </div>
-<section class="content pb-5">
+<section class="content pb-5" id="printThis">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
-						<h6 class="m-0 font-weight-bold card-title">FILED COMPLAINT REPORTS</h6>
+						<div class="card-title">
+							<h6 class="m-0 font-weight-bold">FILED COMPLAINT REPORTS</h6>
+						</div>
+						<div class="card-tools m-0 d-print-none">
+							<button class="badge btn" title="Filter" id="show-filter"><i class="fa fa-filter"></i></button>
+							<button class="badge btn d-none" title="Filter" id="hide-filter"><i class="fas fa-times"></i></button>
+						</div>
 					</div>
 					<div class="card-body">
-						<div class="mb-3 border-bottom pb-3 d-print-none">
-							<form method="POST" action="filed-complaint-reports.php">
-								<div class="row">
-									<div class="col-sm-1 align-self-center">
-										Sort by:
+						<div class="d-print-none d-none" id="filter-search">
+							<div class="mb-3 border-bottom pb-3">
+								<form method="POST" action="filed-complaint-reports.php">
+									<div class="row">
+										<div class="col-sm-1 align-self-center">
+											Filter by:
+										</div>
+										<div class="col-sm">
+											<select class="form-control select2" name="com_id" id="com_id">
+												<option value="" disabled selected>Nature of the Case</option>
+												<?php while ($row = $com_type->fetch_assoc()) : ?>
+													<option value="<?= $row['com_id'] ?>" <?= isset($com_id) && $row['com_id'] == $com_id ? 'selected' : '' ?>><?= $row['com_name'] ?></option>
+												<?php endwhile; ?>
+											</select>
+										</div>
+										<div class="col-sm">
+											<select class="form-control select2" name="status" id="status">
+												<option value="" disabled selected>Status</option>
+												<?php while ($row = $status->fetch_assoc()) : ?>
+													<option value="<?= $row['status_id'] ?>" <?= isset($status_id) && $row['status_id'] == $status_id ? 'selected' : '' ?>><?= $row['status_name'] ?></option>
+												<?php endwhile; ?>
+											</select>
+										</div>
+										<div class="col-sm align-self-center">
+											<input type="text" name="range" class="form-control" id="reportrange" style="cursor: pointer; background-color: white" placeholder="Date Range" value="<?= isset($_POST['range']) && $_POST['range'] != '' ? $_POST['range'] : '' ?>" readonly>
+										</div>
+										<div class="col-sm-1 align-self-center">
+											<button type="submit" class="btn btn-sm btn-primary" name="search"><i class="bi bi-search"></i></button>
+										</div>
 									</div>
-									<div class="col-sm">
-										<select class="form-control select2" name="com_id" id="com_id">
-											<option value="" disabled selected>Nature of the Case</option>
-											<?php while ($row = $com_type->fetch_assoc()) : ?>
-												<option value="<?= $row['com_id'] ?>" <?= isset($com_id) && $row['com_id'] == $com_id ? 'selected' : '' ?>><?= $row['com_name'] ?></option>
-											<?php endwhile; ?>
-										</select>
-									</div>
-									<div class="col-sm">
-										<select class="form-control select2" name="status" id="status">
-											<option value="" disabled selected>Status</option>
-											<?php while ($row = $status->fetch_assoc()) : ?>
-												<option value="<?= $row['status_id'] ?>" <?= isset($status_id) && $row['status_id'] == $status_id ? 'selected' : '' ?>><?= $row['status_name'] ?></option>
-											<?php endwhile; ?>
-										</select>
-									</div>
-									<div class="col-sm align-self-center">
-										<input type="text" name="range" class="form-control" id="reportrange" style="cursor: pointer; background-color: white" placeholder="Date Range" value="<?= isset($_POST['range']) && $_POST['range'] != '' ? $_POST['range'] : '' ?>" readonly>
-									</div>
-									<div class="col-sm-1 align-self-center">
-										<button type="submit" class="btn btn-sm btn-primary" name="search"><i class="bi bi-search"></i></button>
-									</div>
-								</div>
-							</form>
+								</form>
+							</div>
 						</div>
 						<div class="table-responsive">
 							<table class="table table-striped table-hover" id="table_desc" width="100%">
 								<thead>
 									<tr>
-										<th style="width: 10%">Entry No.</th>
-										<th style="width: 10%">Date</th>
-										<th style="width: 10%">Time</th>
+										<th style="width: 15%">Entry No.</th>
+										<th style="width: 15%">Date & Time</th>
+										<!-- <th style="width: 10%">Time</th> -->
 										<th style="width: 20%">Complainant</th>
 										<th style="width: 20%">Respondent</th>
 										<th style="width: 20%">Nature of Case</th>
@@ -155,8 +163,11 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 									<?php while ($row = $fc->fetch_assoc()) : ?>
 										<tr>
 											<th><?= $row['fc_id']; ?></th>
-											<td><?= date('M. d, Y', strtotime($row['fc_regdatetime'])) ?></td>
-											<td><?= date('h:i A', strtotime($row['fc_regdatetime'])) ?></td>
+											<td>
+												<?= date('M. d, Y', strtotime($row['fc_regdatetime'])) ?><br>
+												<?= date('h:i A', strtotime($row['fc_regdatetime'])) ?>
+											</td>
+											<!-- <td></td> -->
 											<td>
 												<?php
 												$comp_id = $row['comp_id'];
@@ -213,17 +224,6 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 										</tr>
 									<?php endwhile; ?>
 								</tbody>
-								<tfoot class="bg-gray-900 text-white">
-									<tr>
-										<th>Entry No.</th>
-										<th>Complainant</th>
-										<th>Respondent</th>
-										<th>Nature of Case</th>
-										<th>Date</th>
-										<th>Time</th>
-										<th>Status</th>
-									</tr>
-								</tfoot>
 							</table>
 						</div>
 					</div>
@@ -286,19 +286,19 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 			_p.find('.card').removeClass('shadow card')
 			_p.find('.card-header').removeClass('card-header')
 			_p.find('.card-body').removeClass('card-body')
-			_p.find('h6.card-title').addClass('text-center h5')
-			_p.find('h6.card-title').removeClass('card-title')
+			_p.find('.card-title').addClass('text-center h5')
+			_p.find('.card-title').removeClass('card-title')
 			_p.find('.dataTables_filter').addClass('d-none')
 			_p.find('.dataTables_length').addClass('d-none')
 			_p.find('.dataTables_info').addClass('d-none')
 			_p.find('.dataTables_paginate').addClass('d-none')
 			_p.find('.dataTable').removeClass('dataTable')
-			_p.find('.hide-on-print').addClass('d-none')
+			// _p.find('.hide-on-print').addClass('d-none')
 			_p.find('th').addClass('text-black')
 			_p.find('table').removeClass('border-0').addClass('border')
 			_el.append(_h)
 			_el.append(_ph)
-			_el.find('title').text('Resident Profile')
+			_el.find('title').text('Filed Complaint Reports')
 			_el.append(_p)
 
 			var nw = window.open('', '_blank', 'width=1000,height=900,top=50,left=200')
@@ -318,6 +318,20 @@ $status = $connection->query("SELECT * FROM tbl_status a");
 				}, 300);
 			}, (750));
 		});
+		$('#show-filter').on('click', function(e) {
+			e.preventDefault()
+			// alert('clicked')
+			$(this).addClass('d-none')
+			$('#filter-search').removeClass('d-none')
+			$('#hide-filter').removeClass('d-none')
+		})
+		$('#hide-filter').on('click', function(e) {
+			e.preventDefault()
+			// alert('clicked')
+			$(this).addClass('d-none')
+			$('#filter-search').addClass('d-none')
+			$('#show-filter').removeClass('d-none')
+		})
 	});
 	$(function() {
 		$('#reportrange').daterangepicker({

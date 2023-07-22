@@ -37,6 +37,22 @@ $(document).ready(function() {
             searchPlaceholder: "Search...",
         }
     });
+    $('.table-asc').DataTable({
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+        ],
+        order: [[0, 'asc']],
+        responsive: true,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search...",
+            infoFiltered: "",
+        },
+        "dom" : 'rtp',
+        "bInfo" : false
+    });
   	$('.select2').select2({
         theme: "bootstrap4",
         width: '100%',
