@@ -2,7 +2,31 @@
 session_start();
 include '../connection.php';
 
-$fc_id = $_POST['fc_id'];
+$get_fc = "SELECT fc_regdatetime, fc_id FROM tbl_file_complaint ORDER BY fc_id DESC";
+$rfc = $connection->query($get_fc)->fetch_assoc();
+$current_year = date('Y');
+if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
+	$last_year = date('Y', strtotime($rfc['fc_regdatetime']));
+	$last_id = substr($rfc['fc_id'], 0, 3);
+
+	for ($i = 1;; $i++) {
+		if ($current_year != $last_year) {
+			$id = $i;
+		} else {
+			if ($i == $last_id) {
+				$id = $i + 1;
+			} else {
+				$id = $i + $last_id;
+			}
+		}
+		break;
+	}
+	$fc_id = sprintf('%03d', $id) . '-' . $current_year;
+} else {
+	$fc_id = sprintf('%03d', 1) . '-' . $current_year;
+}
+
+// $fc_id = $_POST['fc_id'];
 $resp_id = $_POST['resp_id'];
 if (isset($_POST['nres_comp_id'])) {
 	$comp_id = $_POST['nres_comp_id'];

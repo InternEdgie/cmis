@@ -20,11 +20,11 @@ if ($row['inv_type'] == 0) {
 }
 
 $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$row['inv_id']}' AND sched_type = 1")->fetch_assoc();
+$complaint_type = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY com_name ASC");
 // $com_id = $row['com_id'];
 // $status_id = $row['status_id'];
 // $com = $connection->query("SELECT * FROM tbl_complaint_type WHERE com_id = '$com_id'")->fetch_assoc();
 // $status = $connection->query("SELECT * FROM tbl_status WHERE status_id = '$status_id'")->fetch_assoc();
-
 ?>
 <div class="content-header">
     <div class="container-fluid">
@@ -65,6 +65,7 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
                 <h6 class="m-0 font-weight-bold card-title title">INVITATION INFORMATION</h6>
             </div>
             <div class="card-body">
+                <input type="hidden" id="current_status" value="<?= $row['inv_status'] ?>">
                 <dl>
                     <div class="row">
                         <div class="col-md-4">
@@ -93,7 +94,7 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
                                 }
                                 ?>
                             </dd>
-                            <div class="form-group mb-3 show-select-status d-none">
+                            <div class="input-group mb-3 show-select-status d-none">
                                 <select class="form-select" id="status" name="inv_status">
                                     <option value="0" <?= $inv_status == 0 ? 'selected disabled' : '' ?>>Ongoing</option>
                                     <option value="1" <?= $inv_status == 1 ? 'selected disabled' : '' ?>>Settled</option>
@@ -118,6 +119,7 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
         </div>
     </div>
 </section>
+<?php ?>
 <noscript id="print-header">
     <div class="justify-content-center">
         <table class="w-100 mb-5">
@@ -176,12 +178,12 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
             $('.update-status').removeClass('d-none')
             $('.show-select-status').addClass('d-none')
         })
-        $('#updateStatement').on('submit', function(e) {
+        $('#proceedToSummon').on('submit', function(e) {
             e.preventDefault();
-            var updateINV = $('#updateStatement').serialize();
-            console.log(updateINV)
+            var proceedToSummon = $('#proceedToSummon').serialize();
+            console.log(proceedToSummon)
             swal.fire({
-                title: "Continue updating the Statement?",
+                title: "Continue filing this complaint?",
                 icon: 'warning',
                 showCancelButton: !0,
                 confirmButtonText: "Yes, continue!",
@@ -251,6 +253,7 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
         $('#status').on('change', function(e) {
             e.preventDefault()
             var id = $('#inv_id').text()
+            var current_status = $('#current_status').val()
             var status = $(this).val()
             var status_name
 
@@ -263,7 +266,7 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
             } else if (status == 3) {
                 swal.fire({
                     title: "Proceed to Summon?",
-                    icon: 'question',
+                    icon: 'warning',
                     showCancelButton: !0,
                     confirmButtonText: "Yes, continue!",
                     confirmButtonColor: '#dc3545',
@@ -292,9 +295,12 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
                         //         }
                         //     }
                         // });
+                        $('#proceedToSummonModal').modal('show')
+                        
                         
                     } else {
                         e.dismiss;
+                        $('#status').val(current_status)
                     }
                 }, function(dismiss) {
                     return false;
@@ -307,7 +313,7 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
                     icon: 'question',
                     showCancelButton: !0,
                     confirmButtonText: "Yes, continue!",
-                    confirmButtonColor: '#dc3545',
+                    confirmButtonColor: '#007bff',
                     cancelButtonText: "No, wait go back!",
                     reverseButtons: !0
                 }).then(function(e) {
@@ -335,6 +341,7 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
                         });
                     } else {
                         e.dismiss;
+                        $('#status').val(current_status)
                     }
                 }, function(dismiss) {
                     return false;
@@ -342,10 +349,68 @@ $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$
             }
 
         })
+        $('#proceedToSummonModal').on('hide.bs.modal', function() {
+            var current_status = $('#current_status').val()
+            $('#status').val(current_status)
+        })
+        $('.add-complaint-type').on('click', function(e) {
+			e.preventDefault()
+			$('#addComplaintTypeModal').modal('show')
+			$('#proceedToSummonModal').modal('hide')
+		})
+        $('#addComplaintTypeModal').on('hide.bs.modal', function() {
+			$('#proceedToSummonModal').modal('show')
+		})
+        $('#insertComType').on('submit', function(e) {
+			e.preventDefault();
+			var insertComType = $('#insertComType').serialize();
+			console.log(insertComType)
+			swal.fire({
+				title: "Continue adding new record of complaint type?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#4e73df',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-complaint-type-query.php",
+						data: insertComType,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(response);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
+
+								var selectElement = $('.com_id');
+								var newOption = new Option(response.com_name, response.com_id, true, true);
+								selectElement.append(newOption).trigger('change');
+
+								setTimeout(function() {
+									$('#proceedToSummonModal').modal('show')
+									$('#addComplaintTypeModal').modal('hide')
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
     });
 
     // toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
 </script>
 <?php
+include 'assets/modals/add-complaint-type-modal.php';
+include 'assets/modals/proceed-to-summon-modal.php'; 
 include 'layouts/footer.php';
 ?>

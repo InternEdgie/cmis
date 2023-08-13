@@ -95,7 +95,7 @@ $(document).ready(function() {
     $('.com_id').select2({
         theme: 'bootstrap4',
         placeholder: 'Nature of The Case (Complaint Type)',
-        dropdownParent: $('.modal')
+        dropdownParent: $('#proceedToSummonModal, #fileComplaintModal')
     })
 
     $('.for_schedule').select2({

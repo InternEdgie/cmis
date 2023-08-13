@@ -1,5 +1,5 @@
-<div class="modal fade" id="addComplaintTypeModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
+<div class="modal" id="addComplaintTypeModal" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<form method="post" id="insertComType">
 				<div class="modal-header">
@@ -17,7 +17,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default btn-sm text-gray-900" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-sm text-gray-900" data-dismiss="modal">Close</button>
 					<input type="submit" class="btn btn-success btn-sm" name="submit" value="Submit">
 				</div>
 			</form>
