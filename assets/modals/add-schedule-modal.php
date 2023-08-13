@@ -16,7 +16,7 @@
                                 <?php while ($row = $fcr->fetch_assoc()) : ?>
                                     <?php
                                     $fc_id = $row['fc_id'];
-                                    $sched_r = $connection->query("SELECT * FROM tbl_schedules s, tbl_file_complaint fc WHERE s.fc_id = '$fc_id'");
+                                    $sched_r = $connection->query("SELECT * FROM tbl_schedules s, tbl_file_complaint fc WHERE s.fc_id = '$fc_id' AND s.sched_type = 0");
                                     if ($row['fc_type'] == '0') {
                                         $resident = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '{$row['comp_id']}'")->fetch_assoc();
                                         $complainant_name = $resident['res_lname'] . ', ' . $resident['res_fname'];

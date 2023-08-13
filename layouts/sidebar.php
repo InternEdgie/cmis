@@ -25,6 +25,14 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
 					</a>
 				</li>
 				<li class="nav-item">
+					<a href="invitation.php" class="nav-link py-3 <?= $page == 'invitation.php' || $page == 'view-invitation.php' ? 'active' : '' ?>">
+						<i class="nav-icon fas fa-fw fa-envelope"></i>
+						<p>
+							Invitation
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
 					<a href="file-complaint.php" class="nav-link py-3 <?= $page == 'file-complaint.php' || $page == 'view-file-complaint.php' ? 'active' : '' ?>">
 						<i class="nav-icon fas fa-fw fa-file-alt"></i>
 						<p>
@@ -111,7 +119,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
 							</li>
 						</ul>
 					</li>
-					<li class="nav-item <?= $page == 'positions.php' || $page == 'zone.php' || $page == 'citizenship.php' || $page == 'status.php' || $page == 'events.php' || $page == 'complaint-type.php' || $page == 'backup.php' ? 'menu-open' : '' ?>">
+					<!-- <li class="nav-item <?= $page == 'positions.php' || $page == 'zone.php' || $page == 'citizenship.php' || $page == 'status.php' || $page == 'events.php' || $page == 'complaint-type.php' || $page == 'backup.php' ? 'menu-open' : '' ?>">
 						<a href="#" class="nav-link py-3 <?= $page == 'positions.php' || $page == 'zone.php' || $page == 'citizenship.php' || $page == 'status.php' || $page == 'events.php' || $page == 'complaint-type.php' || $page == 'backup.php' ? 'active' : '' ?>">
 							<i class="nav-icon fas fa-cog"></i>
 							<p>
@@ -163,7 +171,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
 								</a>
 							</li>
 						</ul>
-					</li>
+					</li> -->
 					<li class="nav-item">
 						<a href="settings.php" class="nav-link py-3 <?= $page == 'settings.php' ? 'active' : '' ?>">
 							<i class="nav-icon fas fa-fw fa-cog"></i>

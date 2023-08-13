@@ -8,7 +8,7 @@ $fcr = $connection->query($fc);
 $fcr2 = $connection->query($fc);
 $fcr3 = $connection->query($fc);
 
-$schedules = $connection->query("SELECT * FROM tbl_schedules sc, tbl_events ev, tbl_file_complaint fc WHERE sc.event_id = ev.event_id AND sc.fc_id = fc.fc_id");
+$schedules = $connection->query("SELECT * FROM tbl_schedules sc, tbl_events ev, tbl_file_complaint fc WHERE sc.event_id = ev.event_id AND sc.fc_id = fc.fc_id AND sc.sched_type = 0");
 $sched_res = [];
 foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
 	$row['sdate'] = date("F d, Y", strtotime($row['start_date']));
@@ -23,6 +23,22 @@ foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
 	$row['respondent_name'] = $resident['res_lname'] . ', ' . $resident['res_fname'];
 
 	$sched_res[$row['fc_id'] . $row['event_id']] = $row;
+}
+$schedules = $connection->query("SELECT * FROM tbl_schedules sc, tbl_invitation i WHERE sc.fc_id = i.inv_id AND sc.sched_type = 1");
+$sched_res2 = [];
+foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
+	$row['sdate'] = date("F d, Y", strtotime($row['start_date']));
+	if ($row['inv_type'] == '0') {
+		$resident = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '{$row['comp_id']}'")->fetch_assoc();
+		$row['complainant_name'] = $resident['res_lname'] . ', ' . $resident['res_fname'];
+	} else {
+		$nresident = $connection->query("SELECT * FROM tbl_non_residents WHERE nres_id = '{$row['comp_id']}'")->fetch_assoc();
+		$row['complainant_name'] = $nresident['nres_lname'] . ', ' . $nresident['nres_fname'];
+	}
+	$resident = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '{$row['resp_id']}'")->fetch_assoc();
+	$row['respondent_name'] = $resident['res_lname'] . ', ' . $resident['res_fname'];
+
+	$sched_res2[$row['fc_id'] . $row['event_id']] = $row;
 }
 $events = $connection->query("SELECT * FROM tbl_events LIMIT 0, 2");
 
@@ -80,14 +96,14 @@ $remarks = $connection->query("SELECT * FROM tbl_remarks");
 											<input type="hidden" name="schedule_id" id="schedule_id" class="schedule_id" value="">
 											<dl>
 												<dt class="text-muted d-flex">ENTRY NO.
-													<div class="dropdown ml-auto">
+													<!-- <div class="dropdown ml-auto">
 														<button class="btn btn-secondary btn-xs dropdown-toggle dropdown-pill" type="button" id="remarks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														</button>
 														<div class="dropdown-menu" aria-labelledby="remarks">
 															<button class="dropdown-item" type="button" id="settled" data="1">Settled</button>
 															<button class="dropdown-item" type="button" id="not_settled" data="0">Not Settled</button>
 														</div>
-													</div>
+													</div> -->
 												</dt>
 												<dd id="fc_id" class="fw-bold fs-4 file_complaint_id"></dd>
 												<dt class="text-muted">COMPLAINANT</dt>
@@ -128,6 +144,7 @@ if (isset($connection)) $connection->close();
 ?>
 <script>
 	var scheds = $.parseJSON('<?= json_encode($sched_res) ?>');
+	var scheds2 = $.parseJSON('<?= json_encode($sched_res2) ?>');
 </script>
 <script src="./assets/js/script.js"></script>
 <script>

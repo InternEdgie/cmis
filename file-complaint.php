@@ -122,7 +122,7 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 									<td>
 										<?php
 										$s_fc_id = $row['fc_id'];
-										$schedule = "SELECT * FROM tbl_schedules WHERE fc_id = '$s_fc_id'";
+										$schedule = "SELECT * FROM tbl_schedules WHERE fc_id = '$s_fc_id' AND sched_type = 0";
 										$check_sched = $connection->query($schedule);
 
 										if ($check_sched->num_rows > 0) {

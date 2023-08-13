@@ -4,9 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!!scheds) {
     	Object.keys(scheds).map(k => {
     		var row = scheds[k]
-            
     		events.push({
                 color: row.event_color, 
+                id: row.fc_id + row.event_id,
+                title: row.fc_id, 
+                start: row.start_date,
+                meridiem: 'short',
+                allDay: true,
+            });
+    	})
+    }
+    if (!!scheds2) {
+    	Object.keys(scheds2).map(k => {
+    		var row = scheds2[k]
+    		events.push({
+                color: '#28a745',
                 id: row.fc_id + row.event_id,
                 title: row.fc_id, 
                 start: row.start_date,
@@ -88,7 +100,39 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                         })
                 _details.modal('show')
-        	} else {
+        	} else if (!!scheds2[id]) {
+                console.log(scheds2);
+                _details.find('#schedule_id').val(id)
+                _details.find('#fc_id').text(scheds2[id].fc_id)
+                _details.find('#complainant_name').text(scheds2[id].complainant_name)
+                _details.find('#respondent_name').text(scheds2[id].respondent_name)
+                _details.find('#description').text("Invitation")
+                _details.find('#start').text(scheds2[id].sdate)
+                _details.find('#paraID').text(scheds2[id].fc_id)
+                _details.find('#edit,#reschedule').attr('data-id', id)
+                $.ajax({
+                    method: 'POST',
+                    url: 'config/queries/update-schedule-remarks-query.php',
+                    data: {
+                        fc_id: scheds2[id].fc_id,
+                        fetch_remark: "fetch_remark"},
+                    success: function(data) {
+                        var response = JSON.parse(data)
+                        var remarks_text
+                        if (response.remarks == 0) {
+                            remarks_text = "Not Settled"
+                            _details.find('.dropdown #not_settled').addClass('active')
+                            _details.find('#remarks').addClass('btn-warning')
+                        } else {
+                            remarks_text = "Settled"
+                            _details.find('.dropdown #settled').addClass('active')
+                            _details.find('#remarks').addClass('btn-success')
+                        }
+                        _details.find('#remarks').text(remarks_text)
+                            }
+                        })
+                _details.modal('show')
+            } else {
         		alert("Event is undefined");
         	}
         },

@@ -70,32 +70,32 @@ $(document).ready(function() {
     $('.resp_id').select2({
         theme: 'bootstrap4',
         placeholder: 'Select Respondent',
-        dropdownParent: $('#fileComplaintModal')
+        dropdownParent: $('.modal')
     })
 
     $('.fc_type').select2({
         theme: 'bootstrap4',
         width: '100%',
         placeholder: 'Type of Complainant',
-        dropdownParent: $('#fileComplaintModal')
+        dropdownParent: $('.modal')
     })
 
     $('.res_comp_id').select2({
         theme: 'bootstrap4',
         placeholder: 'Select Complainant (Resident)',
-        dropdownParent: $('#fileComplaintModal')
+        dropdownParent: $('.modal')
     })
 
     $('.nres_comp_id').select2({
         theme: 'bootstrap4',
         placeholder: 'Select Complainant (Non-Resident)',
-        dropdownParent: $('#fileComplaintModal')
+        dropdownParent: $('.modal')
     })
 
     $('.com_id').select2({
         theme: 'bootstrap4',
         placeholder: 'Nature of The Case (Complaint Type)',
-        dropdownParent: $('#fileComplaintModal')
+        dropdownParent: $('.modal')
     })
 
     $('.for_schedule').select2({
