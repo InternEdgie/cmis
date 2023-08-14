@@ -36,19 +36,25 @@ $complaint_type = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY 
                 </ol>
             </div><!-- /.col -->
             <div class="col-sm-6 align-self-center text-right">
+                <a href="generate-invitation.php?id=<?= $row['inv_id'] ?>" class="ml-auto btn btn-sm btn-info btn-icon-split shadow-sm">
+                    <span class="icon">
+                        <i class="bi bi-printer"></i>
+                    </span>
+                    <span class="text">Print Invitation</span>
+                </a>
                 <button href="#" class="ml-auto btn btn-sm btn-primary btn-icon-split shadow-sm" id="print">
                     <span class="icon">
                         <i class="bi bi-printer"></i>
                     </span>
                     <span class="text">Print</span>
                 </button>
-                <a href="#" id="edit" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm <?= $check_sched['start_date'] >= date('Y-m-d') ? 'disabled' : '' ?>" data-toggle="modal" data-target="#editResidentModal">
+                <a href="#" id="edit" class="ml-auto btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm <?= $check_sched['start_date'] <= date('Y-m-d') && $row['inv_status'] != 3 ? '' : 'disabled' ?>" data-toggle="modal" data-target="#editResidentModal">
                     <span class="icon">
                         <i class="bi bi-pencil-square"></i>
                     </span>
                     <span class="text">Edit Status</span>
                 </a>
-                <a href="#" id="cancel" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm d-none" data-toggle="modal" data-target="#editResidentModal">
+                <a href="#" id="cancel" class="ml-auto btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm d-none" data-toggle="modal" data-target="#editResidentModal">
                     <span class="icon">
                         <i class="bi bi-x-circle-fill"></i>
                     </span>
@@ -69,7 +75,7 @@ $complaint_type = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY 
                 <dl>
                     <div class="row">
                         <div class="col-md-4">
-                            <dt>ENTRY NO.</dt>
+                            <dt>INVITATION NO.</dt>
                             <dd id="inv_id"><?= $row['inv_id'] ?></dd>
                         </div>
                         <div class="col-md-4">
@@ -194,8 +200,8 @@ $complaint_type = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY 
                 if (e.value === true) {
                     $.ajax({
                         type: 'POST',
-                        url: "config/queries/edit-file-complaint-query.php",
-                        data: updateINV,
+                        url: "config/queries/add-complaint-query.php",
+                        data: proceedToSummon,
                         success: function(data) {
                             var response = JSON.parse(data);
                             console.log(response);
@@ -296,8 +302,8 @@ $complaint_type = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY 
                         //     }
                         // });
                         $('#proceedToSummonModal').modal('show')
-                        
-                        
+
+
                     } else {
                         e.dismiss;
                         $('#status').val(current_status)
@@ -354,63 +360,63 @@ $complaint_type = $connection->query("SELECT * FROM tbl_complaint_type ORDER BY 
             $('#status').val(current_status)
         })
         $('.add-complaint-type').on('click', function(e) {
-			e.preventDefault()
-			$('#addComplaintTypeModal').modal('show')
-			$('#proceedToSummonModal').modal('hide')
-		})
+            e.preventDefault()
+            $('#addComplaintTypeModal').modal('show')
+            $('#proceedToSummonModal').modal('hide')
+        })
         $('#addComplaintTypeModal').on('hide.bs.modal', function() {
-			$('#proceedToSummonModal').modal('show')
-		})
+            $('#proceedToSummonModal').modal('show')
+        })
         $('#insertComType').on('submit', function(e) {
-			e.preventDefault();
-			var insertComType = $('#insertComType').serialize();
-			console.log(insertComType)
-			swal.fire({
-				title: "Continue adding new record of complaint type?",
-				icon: 'question',
-				showCancelButton: !0,
-				confirmButtonText: "Yes, continue!",
-				confirmButtonColor: '#4e73df',
-				cancelButtonText: "No, wait go back!",
-				reverseButtons: !0
-			}).then(function(e) {
-				if (e.value === true) {
-					$.ajax({
-						type: 'POST',
-						url: "config/queries/add-complaint-type-query.php",
-						data: insertComType,
-						success: function(data) {
-							var response = JSON.parse(data);
-							console.log(response);
-							if (response.success_flag == 0) {
-								toastr.error(response.message)
-							} else {
-								toastr.success(response.message);
+            e.preventDefault();
+            var insertComType = $('#insertComType').serialize();
+            console.log(insertComType)
+            swal.fire({
+                title: "Continue adding new record of complaint type?",
+                icon: 'question',
+                showCancelButton: !0,
+                confirmButtonText: "Yes, continue!",
+                confirmButtonColor: '#4e73df',
+                cancelButtonText: "No, wait go back!",
+                reverseButtons: !0
+            }).then(function(e) {
+                if (e.value === true) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "config/queries/add-complaint-type-query.php",
+                        data: insertComType,
+                        success: function(data) {
+                            var response = JSON.parse(data);
+                            console.log(response);
+                            if (response.success_flag == 0) {
+                                toastr.error(response.message)
+                            } else {
+                                toastr.success(response.message);
 
-								var selectElement = $('.com_id');
-								var newOption = new Option(response.com_name, response.com_id, true, true);
-								selectElement.append(newOption).trigger('change');
+                                var selectElement = $('.com_id');
+                                var newOption = new Option(response.com_name, response.com_id, true, true);
+                                selectElement.append(newOption).trigger('change');
 
-								setTimeout(function() {
-									$('#proceedToSummonModal').modal('show')
-									$('#addComplaintTypeModal').modal('hide')
-								}, 2000);
-							}
-						}
-					});
-				} else {
-					e.dismiss;
-				}
-			}, function(dismiss) {
-				return false;
-			})
-		})
+                                setTimeout(function() {
+                                    $('#proceedToSummonModal').modal('show')
+                                    $('#addComplaintTypeModal').modal('hide')
+                                }, 2000);
+                            }
+                        }
+                    });
+                } else {
+                    e.dismiss;
+                }
+            }, function(dismiss) {
+                return false;
+            })
+        })
     });
 
     // toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
 </script>
 <?php
 include 'assets/modals/add-complaint-type-modal.php';
-include 'assets/modals/proceed-to-summon-modal.php'; 
+include 'assets/modals/proceed-to-summon-modal.php';
 include 'layouts/footer.php';
 ?>

@@ -23,6 +23,10 @@ $schedules = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '$id'
 if ($schedules->num_rows == 3) {
     $lupon = $connection->query("SELECT * FROM tbl_lupon l, tbl_selected_lupon sl WHERE sl.fc_id = '$id' AND l.lupon_id = sl.lupon_id");
 }
+
+$s_fc_id = $row['fc_id'];
+$schedule = "SELECT * FROM tbl_schedules WHERE fc_id = '$s_fc_id' AND sched_type = 0";
+$check_sched = $connection->query($schedule);
 // $com_id = $row['com_id'];
 // $status_id = $row['status_id'];
 // $com = $connection->query("SELECT * FROM tbl_complaint_type WHERE com_id = '$com_id'")->fetch_assoc();
@@ -45,18 +49,13 @@ if ($schedules->num_rows == 3) {
                     </span>
                     <span class="text">Print</span>
                 </button>
-                <a href="#" id="edit" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm" data-toggle="modal" data-target="#editResidentModal">
+                <!-- <a href="#" id="edit" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm" data-toggle="modal" data-target="#editResidentModal">
                     <span class="icon">
                         <i class="bi bi-pencil-square"></i>
                     </span>
                     <span class="text">Edit</span>
-                </a>
-                <a href="#" id="cancel" class="ml-3 btn btn-sm text-gray-900 btn-warning btn-icon-split shadow-sm d-none" data-toggle="modal" data-target="#editResidentModal">
-                    <span class="icon">
-                        <i class="bi bi-x-circle-fill"></i>
-                    </span>
-                    <span class="text">Cancel</span>
-                </a>
+                </a> -->
+
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -92,18 +91,35 @@ if ($schedules->num_rows == 3) {
                             <dt>RESPONDENT</dt>
                             <dd><?= "<strong>" . $resp_fullname . '</strong><br>' . $resp_address ?></dd>
                         </div>
-                        <div class="col-md-4">
-                            <dt>CURRENT STATUS</dt>
-                            <dd><?= $row['status_name'] ?></dd>
-                        </div>
+                        <?php if ($check_sched->num_rows > 0) : ?>
+                            <div class="col-md-4">
+                                <dt>CURRENT STATUS</dt>
+                                <dd><?= $row['status_name'] ?></dd>
+                            </div>
+                        <?php else : ?>
+                            <div class="col-md-4">
+                                <dt>CURRENT STATUS</dt>
+                                <dd>No schedule yet.</dd>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                    <dt>REASON OF COMPLAINT</dt>
+                    <dt>
+                        REASON OF COMPLAINT
+                        <a href="#" id="edit" class="btn btn-sm d-print-none text-gray-900 btn-icon-split" data-toggle="modal" data-target="#editResidentModal" title="Edit Statement">
+                            <span class="icon">
+                                <i class="bi bi-pencil-square"></i>
+                            </span>
+                        </a>
+                    </dt>
                     <dd class="statement"><?= $row['fc_statement'] ?></dd>
                     <dd class="edit-statement d-none">
                         <form id="updateStatement" method="POST">
                             <input type="hidden" value="<?= $id ?>" name="fc_id" id="fc_id">
                             <textarea class="form-control" name="fc_statement" id="fc_statement" rows="3"><?= $row['fc_statement'] ?></textarea>
                             <div class="text-right mt-3">
+                                <a href="#" id="cancel" class="ml-3 btn btn-sm text-gray-900 btn-icon-split shadow-sm d-none" data-toggle="modal" data-target="#editResidentModal">
+                                    <span class="text">Cancel</span>
+                                </a>
                                 <input type="submit" class="btn btn-sm btn-warning" style="color:black" value="Submit">
                             </div>
                         </form>

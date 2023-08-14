@@ -7,9 +7,11 @@
                     <button type="button" class="close align-self-center" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" name="summon" value="summon">
                     <input type="hidden" id="resp_id" name="resp_id" value="<?= $row['resp_id'] ?>">
                     <input type="hidden" id="comp_id" name="comp_id" value="<?= $row['comp_id'] ?>">
                     <input type="hidden" id="fc_type" name="fc_type" value="<?= $row['inv_type'] ?>">
+                    <input type="hidden" id="inv_id" name="inv_id" value="<?= $row['inv_id'] ?>">
                     <div class="row">
                         <div class="col-md-3">
                             <span class="font-weight-bold">Complainant</span>

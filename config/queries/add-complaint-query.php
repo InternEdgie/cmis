@@ -28,11 +28,27 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 
 // $fc_id = $_POST['fc_id'];
 $resp_id = $_POST['resp_id'];
+// $comp_id = $_POST['comp_id'];
 if (isset($_POST['nres_comp_id'])) {
 	$comp_id = $_POST['nres_comp_id'];
 }
 if (isset($_POST['res_comp_id'])) {
 	$comp_id = $_POST['res_comp_id'];
+}
+if (isset($_POST['summon'])) {
+	$comp_id = $_POST['comp_id'];
+	$id = $_POST['inv_id'];
+
+	$change_status_query = "UPDATE `tbl_invitation` SET `inv_status`='3' WHERE `inv_id`='$id'";
+
+	if ($connection->query($change_status_query) === TRUE) {
+		if (isset($_SESSION['auth'])) {
+			$action = "Invitation No: " . $id . " - Changed status to Summon";
+			$user_id = $_SESSION['auth_user']['user_id'];
+			$log_query = "INSERT INTO tbl_logs (user_id, log_action) VALUES ('$user_id', '$action')";
+			$log_result = $connection->query($log_query);
+		}
+	}
 }
 $fc_type = $_POST['fc_type'];
 $com_id = $_POST['com_id'];

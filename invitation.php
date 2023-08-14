@@ -76,7 +76,7 @@ if (!empty($rinv['inv_regdatetime']) && !empty($rinv['inv_id'])) {
                     <table class="table table-striped table-hover" id="table_desc" width="100%">
                         <thead>
                             <tr>
-                                <th>Entry No.</th>
+                                <th>Invitation No.</th>
                                 <th>Complainant</th>
                                 <th>Respondent</th>
                                 <th>Status</th>
@@ -137,7 +137,7 @@ if (!empty($rinv['inv_regdatetime']) && !empty($rinv['inv_id'])) {
                                         $check_sched = $connection->query("SELECT * FROM tbl_schedules WHERE fc_id = '{$row['inv_id']}' AND sched_type = 1")->fetch_assoc();
                                         if ($_SESSION['role'] == 1) {
                                         ?>
-                                            <a href="#" class="btn btn-sm btn-primary shadow-sm" title="Print Invitation"><i class="bi bi-printer"></i></a>
+                                            <a href="generate-invitation.php?id=<?= $row['inv_id'] ?>" class="btn btn-sm btn-primary shadow-sm" title="Print Invitation"><i class="bi bi-printer"></i></a>
                                         <?php
                                         }
                                         ?>
@@ -149,7 +149,7 @@ if (!empty($rinv['inv_regdatetime']) && !empty($rinv['inv_id'])) {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Entry No.</th>
+                                <th>Invitation No.</th>
                                 <th>Complainant</th>
                                 <th>Respondent</th>
                                 <th>Status</th>
