@@ -396,25 +396,25 @@ if (!empty($rinv['inv_regdatetime']) && !empty($rinv['inv_id'])) {
                                 toastr.error(response.message)
                             } else {
                                 toastr.success(response.message);
-                                if ($('#resp_id').val() == '') {
+                                // if ($('#resp_id').val() == '') {
                                     var selectElement = $('.resp_id');
-                                    var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
+                                    var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id);
                                     selectElement.append(newOption).trigger('change');
 
                                     var secondElement = $('.res_comp_id')
                                     var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
                                     secondElement.append(secondOption).trigger('change');
-                                }
+                                // }
 
-                                if ($('#res_comp_id').val() == '') {
-                                    var selectElement = $('.res_comp_id');
-                                    var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
-                                    selectElement.append(newOption).trigger('change');
+                                // if ($('#res_comp_id').val() == '') {
+                                //     var selectElement = $('.res_comp_id');
+                                //     var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
+                                //     selectElement.append(newOption).trigger('change');
 
-                                    var secondElement = $('.resp_id')
-                                    var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
-                                    secondElement.append(secondOption).trigger('change');
-                                }
+                                //     var secondElement = $('.resp_id')
+                                //     var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
+                                //     secondElement.append(secondOption).trigger('change');
+                                // }
 
                                 setTimeout(function() {
                                     $('#invitationModal').modal('show')

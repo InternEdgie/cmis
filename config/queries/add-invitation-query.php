@@ -22,9 +22,9 @@ if ($sr->num_rows == 3) {
     $message = "<b>" . date('F d, Y', strtotime($start_date)) . "</b> is full. Please choose another day. (Max schedule per day: <b>3</b>)";
     $flag = 0;
 } else {
-    $schedule_query = $connection->query("INSERT INTO tbl_schedules (fc_id, sched_details, `start_date`, sched_type) VALUES ('$inv_id', '$sched_details', '$start_date', '1')");
-
     if ($connection->query($invitation_query) === TRUE) {
+        $schedule_query = $connection->query("INSERT INTO tbl_schedules (fc_id, sched_details, `start_date`, sched_type) VALUES ('$inv_id', '$sched_details', '$start_date', '1')");
+
         $action = "Added new invitation with Entry No: <b>" . $inv_id . "</b>";
         $user_id = $_SESSION['auth_user']['user_id'];
         $log_query = "INSERT INTO tbl_logs (user_id, log_action) VALUES ('$user_id', '$action')";

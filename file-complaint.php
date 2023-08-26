@@ -84,7 +84,7 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 							<?php while ($row = $fc->fetch_assoc()) : ?>
 								<tr>
 									<th class="align-middle"><?= $row['fc_id']; ?></th>
-									<td>
+									<td class="complainant">
 										<?php
 										$comp_id = $row['comp_id'];
 										if ($row['fc_type'] == 0) {
@@ -97,7 +97,7 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 										echo $comp_fullname;
 										?>
 									</td>
-									<td>
+									<td class="respondent">
 										<?php
 										$resp_id = $row['resp_id'];
 										$residents = $connection->query("SELECT * FROM tbl_residents WHERE res_id = '$resp_id'")->fetch_assoc();
@@ -161,11 +161,11 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 										<?php
 										if ($check_sched->num_rows > 0) {
 										?>
-											<a href="#" class="btn btn-sm btn-success shadow-sm"><i class="bi bi-calendar-check"></i></a>
+											<a href="#" class="btn btn-sm btn-success shadow-sm view-schedule"><i class="bi bi-calendar-check"></i></a>
 										<?php
 										} else {
 										?>
-											<a href="#" class="btn btn-sm btn-secondary shadow-sm"><i class="bi bi-calendar-x text-white-50"></i></a>
+											<a href="#" class="btn btn-sm btn-secondary shadow-sm add-schedule"><i class="bi bi-calendar-x text-white-50"></i></a>
 										<?php
 										}
 
@@ -429,25 +429,26 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 								toastr.error(response.message)
 							} else {
 								toastr.success(response.message);
-								if ($('#resp_id').val() == '') {
+								// console.log($('#resp_id').val())
+								// if ($('#resp_id').val() === null) {
 									var selectElement = $('.resp_id');
-									var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
-									selectElement.append(newOption).trigger('change');
+									var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id);
+									selectElement.prepend(newOption).trigger('change');
 
 									var secondElement = $('.res_comp_id')
 									var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
-									secondElement.append(secondOption).trigger('change');
-								}
+									secondElement.prepend(secondOption).trigger('change');
+								// }
 
-								if ($('#res_comp_id').val() == '') {
-									var selectElement = $('.res_comp_id');
-									var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
-									selectElement.append(newOption).trigger('change');
+								// if ($('#res_comp_id').val() == '') {
+								// 	var selectElement = $('.res_comp_id');
+								// 	var newOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id, true, true);
+								// 	selectElement.append(newOption).trigger('change');
 
-									var secondElement = $('.resp_id')
-									var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
-									secondElement.append(secondOption).trigger('change');
-								}
+								// 	var secondElement = $('.resp_id')
+								// 	var secondOption = new Option(response.res_lname + ', ' + response.res_fname, response.res_id)
+								// 	secondElement.append(secondOption).trigger('change');
+								// }
 
 								setTimeout(function() {
 									$('#fileComplaintModal').modal('show')
@@ -556,12 +557,64 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 		$('#addResidentModal, #addNonResidentModal, #addComplaintTypeModal').on('hide.bs.modal', function() {
 			$('#fileComplaintModal').modal('show')
 		})
+		$('#insertSchedule').on('submit', function(e) {
+			e.preventDefault();
+			var insertSchedule = $('#insertSchedule').serialize();
+			console.log(insertSchedule)
+			swal.fire({
+				title: "Add this schedule?",
+				icon: 'question',
+				showCancelButton: !0,
+				confirmButtonText: "Yes, continue!",
+				confirmButtonColor: '#28a745',
+				cancelButtonText: "No, wait go back!",
+				reverseButtons: !0
+			}).then(function(e) {
+				if (e.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: "config/queries/add-schedule-query.php",
+						data: insertSchedule,
+						success: function(data) {
+							var response = JSON.parse(data);
+							console.log(data);
+							if (response.success_flag == 0) {
+								toastr.error(response.message)
+							} else {
+								toastr.success(response.message);
+
+								setTimeout(function() {
+									window.location.reload();
+								}, 2000);
+							}
+						}
+					});
+				} else {
+					e.dismiss;
+				}
+			}, function(dismiss) {
+				return false;
+			})
+		})
 		// $('#addNonResidentModal').on('hide.bs.modal', function() {
 		// 	$('#fileComplaintModal').modal('show')
 		// })
 		// $('#addComplaintTypeModal').on('hide.bs.modal', function() {
 		// 	$('#fileComplaintModal'),modal('show')
 		// })
+		$('.add-schedule').on('click', function(e) {
+            e.preventDefault()
+            var fc_id = $(this).closest('tr').find('th').text()
+			var complainant_name = $(this).closest('tr').find('.complainant').text()
+			var respondent_name = $(this).closest('tr').find('.respondent').text()
+			// alert(complainant_name + ' ' + respondent_name)
+			
+			$('#addScheduleModal').modal('show')
+			$('#fc_id').val(fc_id)
+			$('#complainant-name').text(complainant_name)
+			$('#respondent-name').text(respondent_name)
+			$('#entry-number').text(fc_id)
+        })
 	})
 	document.addEventListener('DOMContentLoaded', function() {
 		window.stepper = new Stepper(document.querySelector('.bs-stepper'))
@@ -569,6 +622,7 @@ if (!empty($rfc['fc_regdatetime']) && !empty($rfc['fc_id'])) {
 </script>
 
 <?php
+include 'assets/modals/add-schedule-modal2.php';
 include 'assets/modals/add-residents-modal.php';
 include 'assets/modals/add-non-resident-modal.php';
 include 'assets/modals/add-complaint-type-modal.php';

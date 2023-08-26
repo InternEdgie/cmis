@@ -139,29 +139,72 @@ document.addEventListener('DOMContentLoaded', function() {
         editable: true,
         eventDrop: function(info) {
         	var id = info.event.id
-            var start_date = info.event.start;
-            alert(moment().format('YYYY-MM-DD') + ' - ' + moment(start_date).format('YYYY-MM-DD'))
+            var start_date = info.event.start
+            var fc_id
+            var event_id
+            var sched_type
+            // alert(moment().format('YYYY-MM-DD') + ' - ' + moment(start_date).format('YYYY-MM-DD'))
         	if (!!scheds[id]) {
-                var fc_id = scheds[id].fc_id;
-                var event_id = scheds[id].event_id;
-                console.log(start_date);
-                $.ajax({
-                    method: 'POST',
-                    url: 'config/query.php',
-                    data: {
-                        start_date:start_date,
-                        fc_id:fc_id,
-                        event_id:event_id,
-                        update_schedule_on_drop:id
+                fc_id = scheds[id].fc_id;
+                event_id = scheds[id].event_id;
+                sched_type = scheds[id].sched_type;
+                // console.log(start_date);
+                // $.ajax({
+                //     method: 'POST',
+                //     url: 'config/query.php',
+                //     data: {
+                //         start_date:start_date,
+                //         fc_id:fc_id,
+                //         event_id:event_id,
+                //         update_schedule_on_drop:id
 
-                    },
-                    success:function(info){
-                        location.reload()
-                    }
-                });
+                //     },
+                //     success:function(info){
+                //         location.reload()
+                //     }
+                // });
+        	} else if (!!scheds2[id]) {
+                fc_id = scheds2[id].fc_id;
+                event_id = scheds2[id].event_id;
+                sched_type = scheds2[id].sched_type;
         	} else {
-        		alert("Event is undefined");
-        	}
+                alert("Event is undefined");
+            }
+            swal.fire({
+                title: "Are you sure you want to change the schedule?",
+                icon: 'warning',
+                showCancelButton: !0,
+                confirmButtonText: "Yes, continue!",
+                confirmButtonColor: '#ffc107',
+                cancelButtonText: "No, wait go back!",
+                reverseButtons: !0
+            }).then(function(e) {
+                if (e.value === true) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "config/queries/edit-schedule-on-drop-query.php",
+                        data: {
+                            start_date:start_date,
+                            fc_id:fc_id,
+                            event_id:event_id,
+                            sched_type:sched_type
+                        },
+                        success: function(data) {
+                            var response = JSON.parse(data);
+                            if (response.success_flag == 0) {
+                                toastr.error(response.message)
+                            } else {
+                                toastr.success(response.message);
+                            }
+                        }
+                    });
+                } else {
+                    window.location.reload();
+                    e.dismiss;
+                }
+            }, function(dismiss) {
+                return false;
+            })
         },
         select: function(info) {
         	var _form = $('#addScheduleModal')

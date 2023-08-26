@@ -21,6 +21,7 @@ if (isset($_SESSION['auth'])) {
         <title>CMIS - Login</title>
 
         <!-- Custom fonts for this template-->
+        <link rel="shortcut icon" href="assets/img/logo.png">
         <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -36,7 +37,7 @@ if (isset($_SESSION['auth'])) {
                         	<div class="p-5">
                         		<div class="text-center">
                         			<img src="assets/img/logo.png" width="70" height="70" class="img-fluid mb-4">
-                        			<h1 class="h4 text-gray-900">LUPONG TAGAPAMAYAPA</h1>
+                        			<h1 class="h4 text-gray-900">LUPON TAGAPAMAYAPA</h1>
                         			<h3 class="h5 text-gray-900 mb-4">BARANGAY MACABALAN</h3>
                         		</div>
                                 <?php include 'config/message.php'; ?>
@@ -86,10 +87,10 @@ if (isset($_SESSION['auth'])) {
 
                     $action = "Logged In";
                     $log_query = $connection->query("INSERT INTO tbl_logs (user_id, log_action) VALUES ('$user_id', '$action')");
-                    $_SESSION['message_success'] = "Welcome to Dashboard <strong>". $user_firstname . ' ' . $user_lastname ."</strong>!";
+                    // $_SESSION['message_success'] = "Welcome to Dashboard <strong>". $user_firstname . ' ' . $user_lastname ."</strong>!";
                     header('location: dashboard.php');
                 } else {
-                    $_SESSION['message_failed'] = "Your account status is inactive, try contacting the Administrator.";
+                    // $_SESSION['message_failed'] = "Your account status is inactive, try contacting the Administrator.";
                     header('location: login.php');
                 }
             } else {

@@ -105,7 +105,7 @@ $check_sched = $connection->query($schedule);
                     </div>
                     <dt>
                         REASON OF COMPLAINT
-                        <a href="#" id="edit" class="btn btn-sm d-print-none text-gray-900 btn-icon-split" data-toggle="modal" data-target="#editResidentModal" title="Edit Statement">
+                        <a href="#" id="edit" class="btn btn-sm text-gray-900 d-print-none" data-toggle="modal" data-target="#editResidentModal" title="Edit Statement">
                             <span class="icon">
                                 <i class="bi bi-pencil-square"></i>
                             </span>
